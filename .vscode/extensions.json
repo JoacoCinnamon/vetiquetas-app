@@ -1,0 +1,22 @@
+{
+    "recommendations": [
+        // PHP
+        "DEVSENSE.phptools-vscode",
+        "jaguadoromero.vscode-php-create-class",
+        "bmewburn.vscode-intelephense-client",
+        "MehediDracula.php-namespace-resolver",
+        "DEVSENSE.composer-php-vscode",
+        // Tailwind
+        "bradlc.vscode-tailwindcss",
+        // Blade
+        "naoray.laravel-goto-components",
+        "cjhowe7.laravel-blade",
+        "codingyu.laravel-goto-view",
+        "amiralizadeh9480.laravel-extra-intellisense",
+        "austenc.laravel-blade-spacer",
+        "shufo.vscode-blade-formatter",
+        // Generales
+        "usernamehw.errorlens",
+        "vivaxy.vscode-conventional-commits"
+    ]
+}
