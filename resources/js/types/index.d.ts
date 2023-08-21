@@ -1,6 +1,10 @@
 export interface User {
     id: number;
-    name: string;
+    nombre: string;
+    apellido: string;
+    documento: string;
+    tipo_documento: string;
+    cuit_cuil: string;
     email: string;
     email_verified_at: string;
 }

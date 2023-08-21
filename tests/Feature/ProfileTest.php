@@ -1,85 +1,65 @@
 <?php
 
 use App\Models\User;
+use function Pest\Laravel\{actingAs, assertAuthenticated};
+use function PHPUnit\Framework\{assertNotNull, assertNull, assertSame};
 
-test('profile page is displayed', function () {
+test("profile page is displayed", function () {
     $user = User::factory()->create();
 
-    $response = $this
-        ->actingAs($user)
-        ->get('/profile');
+    $response = actingAs($user)
+        ->get("/perfil");
 
     $response->assertOk();
 });
 
-test('profile information can be updated', function () {
+test("profile information can be updated", function () {
     $user = User::factory()->create();
 
-    $response = $this
-        ->actingAs($user)
-        ->patch('/profile', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+    $response = actingAs($user)
+        ->patch("/perfil", [
+            "nombre" => "Test Name",
+            "apellido" => "Test Lastname",
+            "email" => "test@example.com",
         ]);
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+        ->assertRedirect("/perfil");
 
     $user->refresh();
 
-    $this->assertSame('Test User', $user->name);
-    $this->assertSame('test@example.com', $user->email);
-    $this->assertNull($user->email_verified_at);
+    assertSame("Test Name", $user->nombre);
+    assertSame("Test Lastname", $user->apellido);
+    assertSame("test@example.com", $user->email);
+    assertNull($user->email_verified_at);
 });
 
-test('email verification status is unchanged when the email address is unchanged', function () {
+test("email verification status is unchanged when the email address is unchanged", function () {
     $user = User::factory()->create();
 
-    $response = $this
-        ->actingAs($user)
-        ->patch('/profile', [
-            'name' => 'Test User',
-            'email' => $user->email,
+    $response = actingAs($user)
+        ->patch("/perfil", [
+            "nombre" => "Test name",
+            "email" => $user->email,
         ]);
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect('/profile');
+        ->assertRedirect("/perfil");
 
-    $this->assertNotNull($user->refresh()->email_verified_at);
+    assertNotNull($user->refresh()->email_verified_at);
 });
 
-test('user can delete their account', function () {
+test("user cant delete their account", function () {
     $user = User::factory()->create();
 
-    $response = $this
-        ->actingAs($user)
-        ->delete('/profile', [
-            'password' => 'password',
+    $response = actingAs($user)
+        ->delete("/perfil", [
+            "password" => "password",
         ]);
 
-    $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect('/');
+    $response->assertMethodNotAllowed();
 
-    $this->assertGuest();
-    $this->assertNull($user->fresh());
-});
-
-test('correct password must be provided to delete account', function () {
-    $user = User::factory()->create();
-
-    $response = $this
-        ->actingAs($user)
-        ->from('/profile')
-        ->delete('/profile', [
-            'password' => 'wrong-password',
-        ]);
-
-    $response
-        ->assertSessionHasErrors('password')
-        ->assertRedirect('/profile');
-
-    $this->assertNotNull($user->fresh());
+    assertAuthenticated();
 });

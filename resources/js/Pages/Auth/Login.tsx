@@ -29,12 +29,12 @@ export default function Login({
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route("login"));
+        post(route("iniciar-sesion"));
     };
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title="Iniciar Sesion" />
 
             {status && (
                 <div className="mb-4 font-medium text-sm text-green-600">
@@ -44,7 +44,7 @@ export default function Login({
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="Correo electrónico" />
 
                     <TextInput
                         id="email"
@@ -61,7 +61,7 @@ export default function Login({
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Contraseña" />
 
                     <TextInput
                         id="password"
@@ -86,7 +86,7 @@ export default function Login({
                             }
                         />
                         <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                            Remember me
+                            Recordarme
                         </span>
                     </label>
                 </div>
@@ -97,12 +97,12 @@ export default function Login({
                             href={route("password.request")}
                             className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                         >
-                            Forgot your password?
+                            ¿Olvidaste tu contraseña?
                         </Link>
                     )}
 
                     <PrimaryButton className="ml-4" disabled={processing}>
-                        Log in
+                        Iniciar sesión
                     </PrimaryButton>
                 </div>
             </form>
