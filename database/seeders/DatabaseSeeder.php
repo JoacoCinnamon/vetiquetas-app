@@ -16,5 +16,9 @@ class DatabaseSeeder extends Seeder {
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        // Llamando a los seeders de los roles, permisos y al del usuario administrador
+        $this->call(RolesAndPermissionsSeeder::class);
+        $this->call(AdminSeeder::class);
     }
 }
