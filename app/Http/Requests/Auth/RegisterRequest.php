@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Enums\Roles;
 use App\Models\User;
 use App\Rules\ValidCuitCuil;
 use Illuminate\Foundation\Http\FormRequest;
@@ -49,8 +50,9 @@ class RegisterRequest extends FormRequest {
      */
     public function register(): User {
         $validatedUser = $this->validated();
-
-        return User::create($validatedUser);
+        $user = User::create($validatedUser);
+        $user->syncRoles(Roles::Usuario->value);
+        return $user;
     }
 
     /**

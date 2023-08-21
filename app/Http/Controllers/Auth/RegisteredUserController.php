@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\Roles;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Providers\RouteServiceProvider;
@@ -27,8 +26,6 @@ class RegisteredUserController extends Controller {
      */
     public function store(RegisterRequest $request): RedirectResponse {
         $user = $request->register();
-
-        $user->syncRoles(Roles::Usuario->value);
 
         event(new Registered($user));
 
