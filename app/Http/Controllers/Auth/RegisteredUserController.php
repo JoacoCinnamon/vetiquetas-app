@@ -7,19 +7,16 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredUserController extends Controller
-{
+class RegisteredUserController extends Controller {
     /**
      * Display the registration view.
      */
-    public function create(): Response
-    {
-        return Inertia::render("Auth/Register");
+    public function create(): Response {
+        return Inertia::render('Auth/Register');
     }
 
     /**
@@ -27,8 +24,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(RegisterRequest $request): RedirectResponse
-    {
+    public function store(RegisterRequest $request): RedirectResponse {
         $user = $request->register();
 
         event(new Registered($user));

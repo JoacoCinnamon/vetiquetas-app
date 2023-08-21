@@ -1,0 +1,18 @@
+{
+    "preset": "psr12",
+    "rules": {
+        "simplified_null_return": false,
+        "braces": {
+            "allow_single_line_closure": false,
+            "position_after_functions_and_oop_constructs": "same"
+        },
+        "curly_braces_position": {
+            "classes_opening_brace": "same_line",
+            "functions_opening_brace": "same_line"
+        },
+        "single_quote": {
+            "strings_containing_single_quote_chars": false
+        },
+        "declare_strict_types": false
+    }
+}

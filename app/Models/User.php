@@ -12,9 +12,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
-{
-    use HasApiTokens, HasFactory, Notifiable;
+class User extends Authenticatable {
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -22,13 +23,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        "nombre",
-        "apellido",
-        "documento",
-        "tipo_documento",
-        "cuit_cuil",
-        "email",
-        "password",
+        'nombre',
+        'apellido',
+        'documento',
+        'tipo_documento',
+        'cuit_cuil',
+        'email',
+        'password',
     ];
 
     /**
@@ -37,8 +38,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        "password",
-        "remember_token",
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -47,14 +48,13 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        "tipo_documento" => TipoDocumento::class,
-        "email_verified_at" => "datetime",
-        "password" => "hashed",
+        'tipo_documento' => TipoDocumento::class,
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
     ];
 
     // Accessor/Mutator
-    public function cuitCuil(): Attribute
-    {
+    public function cuitCuil(): Attribute {
         return Attribute::make(
             // Lo transforma de la base de datos
             get: fn ($value) => Str::substr($value, 0, 2) . '-' . Str::substr($value, 2, 8) . '-' . Str::substr($value, 10),
