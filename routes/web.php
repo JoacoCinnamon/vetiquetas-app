@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\PrecioUnitarioController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TipoEtiquetaController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +34,11 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('perfil.edit');
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('perfil.update');
+});
+
+Route::middleware(['role:admin'])->prefix('administracion')->name('administracion.')->group(function () {
+    Route::resource('/etiquetas', TipoEtiquetaController::class);
+    Route::resource('/precios', PrecioUnitarioController::class);
 });
 
 require __DIR__ . '/auth.php';

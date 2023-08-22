@@ -33,6 +33,20 @@ export default function Authenticated({
                                 >
                                     Dashboard
                                 </NavLink>
+
+                                <NavLink
+                                    href={route("administracion.etiquetas.index")}
+                                    active={route().current("administracion.etiquetas.index")}
+                                >
+                                    Etiquetas
+                                </NavLink>
+
+                                <NavLink
+                                    href={route("administracion.precios.index")}
+                                    active={route().current("administracion.precios.index")}
+                                >
+                                    Precios
+                                </NavLink>
                             </div>
                         </div>
 
@@ -135,6 +149,12 @@ export default function Authenticated({
                             active={route().current("dashboard")}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("administracion.etiquetas.index")}
+                            active={route().current("administracion.etiquetas.index")}
+                        >
+                            Etiquetas
                         </ResponsiveNavLink>
                     </div>
 

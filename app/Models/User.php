@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\Roles;
 use App\Enums\TipoDocumento;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,5 +64,9 @@ class User extends Authenticatable {
             // Lo transforma a la base de datos
             set: fn ($value) => str_replace('-', '', $value)
         );
+    }
+
+    public function isAdmin() {
+        return $this->hasRole(Roles::Administrador->value);
     }
 }
