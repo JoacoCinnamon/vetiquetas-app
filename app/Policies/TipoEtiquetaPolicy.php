@@ -18,7 +18,7 @@ class TipoEtiquetaPolicy {
      * Determine whether the user can view the model.
      */
     public function view(User $user, TipoEtiqueta $tipoEtiqueta): bool {
-        return true;
+        return $user->hasPermissionTo(Permisos::VerTiposEtiquetas->value);
     }
 
     /**

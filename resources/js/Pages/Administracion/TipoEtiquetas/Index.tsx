@@ -1,13 +1,8 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AuthenticatedLayout from "@/Layouts/DefaultLayout";
 import { Head, Link } from "@inertiajs/react";
 import { PageProps } from "@/types";
+import { TipoEtiqueta } from "@/types/models";
 
-export type TipoEtiqueta = {
-  id: number;
-  nombre: string;
-  creado_en: string
-  editado_en: string;
-}
 export default function TipoEtiquetaIndex({ auth, tipo_etiquetas }: PageProps<{ tipo_etiquetas: TipoEtiqueta[]; }>) {
   return (
     <AuthenticatedLayout
@@ -43,9 +38,9 @@ export default function TipoEtiquetaIndex({ auth, tipo_etiquetas }: PageProps<{ 
                                   <td className="px-5 py-4 text-sm font-medium whitespace-nowrap">{etiqueta.nombre}</td>
                                 </tr>)
                               })
-                              : <>
-                                <p>No hay etiquetas aún, <Link className="underline" href={route("administracion.etiquetas.create")}>agregá</Link> alguna!</p>
-                              </>
+                              : <tr>
+                                <td>No hay etiquetas aún, <Link className="underline" href={route("administracion.etiquetas.create")}>agregá</Link> alguna!</td>
+                              </tr>
                           }
                         </tbody>
                       </table>

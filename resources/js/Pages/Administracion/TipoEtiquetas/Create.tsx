@@ -1,4 +1,4 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AuthenticatedLayout from "@/Layouts/DefaultLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import InputError from "@/Components/InputError";
@@ -7,11 +7,6 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
 
-type TipoEtiqueta = {
-  id: number;
-  nombre: string;
-  timestamp: string;
-}
 export default function TipoEtiquetaCreate({ auth }: PageProps) {
   const { data, setData, post, processing, errors } = useForm({
     nombre: "",

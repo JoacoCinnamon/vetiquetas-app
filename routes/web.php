@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\PrecioUnitarioController;
+use App\Http\Controllers\PrecioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TipoEtiquetaController;
 use Illuminate\Foundation\Application;
@@ -19,26 +19,21 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/inicio', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('inicio');
 
 Route::middleware('auth')->group(function () {
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('perfil.edit');
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('perfil.update');
 });
 
-Route::middleware(['role:admin'])->prefix('administracion')->name('administracion.')->group(function () {
+Route::middleware(['role:admin', 'auth'])->prefix('administracion')->name('administracion.')->group(function () {
     Route::resource('/etiquetas', TipoEtiquetaController::class);
-    Route::resource('/precios', PrecioUnitarioController::class);
+    Route::resource('/precios', PrecioController::class);
 });
 
 require __DIR__ . '/auth.php';

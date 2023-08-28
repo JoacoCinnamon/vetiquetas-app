@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\PrecioUnitario;
+use App\Models\Precio;
 use App\Models\User;
 
-class PrecioUnitarioPolicy {
+class PrecioPolicy {
     /**
      * Determine whether the user can view any models.
      */
@@ -16,7 +16,7 @@ class PrecioUnitarioPolicy {
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, PrecioUnitario $precioUnitario): bool {
+    public function view(User $user, Precio $precio): bool {
         return $user->isAdmin();
     }
 
@@ -30,28 +30,28 @@ class PrecioUnitarioPolicy {
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, PrecioUnitario $precioUnitario): bool {
+    public function update(User $user, Precio $precio): bool {
         return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, PrecioUnitario $precioUnitario): bool {
+    public function delete(User $user, Precio $precio): bool {
         return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, PrecioUnitario $precioUnitario): bool {
+    public function restore(User $user, Precio $precio): bool {
         return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, PrecioUnitario $precioUnitario): bool {
+    public function forceDelete(User $user, Precio $precio): bool {
         return $user->isAdmin();
     }
 }

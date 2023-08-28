@@ -4,9 +4,9 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
-use App\Models\PrecioUnitario;
+use App\Models\Precio;
 use App\Models\TipoEtiqueta;
-use App\Policies\PrecioUnitarioPolicy;
+use App\Policies\PrecioPolicy;
 use App\Policies\TipoEtiquetaPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -18,7 +18,7 @@ class AuthServiceProvider extends ServiceProvider {
      */
     protected $policies = [
         TipoEtiqueta::class => TipoEtiquetaPolicy::class,
-        PrecioUnitario::class => PrecioUnitarioPolicy::class,
+        Precio::class => PrecioPolicy::class,
     ];
 
     /**

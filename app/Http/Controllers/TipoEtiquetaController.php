@@ -32,7 +32,7 @@ class TipoEtiquetaController extends Controller {
         $this->authorize('create', TipoEtiqueta::class);
 
         $validated = $request->validate([
-            'nombre' => ['required', 'string', 'max:255', 'unique:tipo_etiquetas']
+            'nombre' => ['required', 'string', 'max:255', 'unique:' . TipoEtiqueta::class]
         ]);
         TipoEtiqueta::create($validated);
 
