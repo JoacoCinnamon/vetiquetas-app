@@ -1,4 +1,4 @@
-import AuthenticatedLayout from "@/Layouts/DefaultLayout";
+import Layout from "@/Layouts/DefaultLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import InputError from "@/Components/InputError";
@@ -7,7 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
 import formatDate from "@/utils/date";
-import { Precio, TipoEtiqueta, TipoEtiquetaWithPrecios } from "@/types/models";
+import { CANTIDAD_COLORES, MEDIDAS, Precio, TipoEtiqueta, TipoEtiquetaWithPrecios } from "@/types/models";
 
 
 function Precios({ precios }: { precios: Precio[] | [] | undefined }) {
@@ -60,15 +60,12 @@ function Precios({ precios }: { precios: Precio[] | [] | undefined }) {
   )
 }
 
-const MEDIDAS = [12, 14, 16, 20, 22, 25]
-const CANTIDAD_COLORES = [1, 2, 3, 4, 5, 6, 7]
-
 export default function PrecioCreate({ auth, tipoEtiquetas }:
   PageProps<{ tipoEtiquetas: TipoEtiquetaWithPrecios[]; }>
 ) {
 
   if (!tipoEtiquetas || tipoEtiquetas.length === 0) {
-    return <AuthenticatedLayout
+    return <Layout
       user={auth.user}
       header={
         <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -86,7 +83,7 @@ export default function PrecioCreate({ auth, tipoEtiquetas }:
           </div>
         </div>
       </div>
-    </AuthenticatedLayout >
+    </Layout >
   }
 
   const { data, setData, post, processing, errors } = useForm({
@@ -103,7 +100,7 @@ export default function PrecioCreate({ auth, tipoEtiquetas }:
   };
 
   return (
-    <AuthenticatedLayout
+    <Layout
       user={auth.user}
       header={
         <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -226,7 +223,7 @@ export default function PrecioCreate({ auth, tipoEtiquetas }:
           <Precios precios={precios} />
         </div>
       </div>
-    </AuthenticatedLayout >
+    </Layout >
   );
 }
 

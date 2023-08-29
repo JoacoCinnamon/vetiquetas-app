@@ -1,26 +1,29 @@
 import { PropsWithChildren, ReactNode } from "react";
 import { User } from "@/types";
 import { MainNavBar } from "./navbar";
+import SiteFooter from "@/Components/site-footer";
+import { MobileNav } from "@/Components/mobile-nav";
+import { MainNav } from "@/Components/main-nav";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/Components/ui/button";
+import { Link } from "@inertiajs/react";
+import { vetiquetasConfig } from "@/Config/Site";
 
 export default function Layout({
     user,
     header,
     children,
-}: PropsWithChildren<{ user: User; header?: ReactNode }>) {
-
+}: PropsWithChildren<{ user: User | null; header?: ReactNode }>) {
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <MainNavBar user={user} />
-
-            {header && (
-                <header className="bg-white dark:bg-gray-800 shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {header}
-                    </div>
-                </header>
-            )}
-
-            <main>{children}</main>
-        </div>
+        < div className="flex min-h-screen flex-col" >
+            <header className="container z-40 bg-background">
+                <div className="flex h-20 items-center justify-between py-6">
+                    <MainNav user={user} />
+                    <MobileNav user={user} />
+                </div>
+            </header>
+            <main className="flex-1">{children}</main>
+            <SiteFooter />
+        </div >
     );
 }

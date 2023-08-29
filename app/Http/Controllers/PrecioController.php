@@ -39,7 +39,7 @@ class PrecioController extends Controller {
             'tipo_etiqueta_id' => ['required', 'numeric', 'exists:'.TipoEtiqueta::class.',id'],
             'medida' => ['required', 'numeric','between:10,110'],
             'cantidad_colores' => ['required', 'numeric', 'between:1,7'],
-            'precio' => ['required', 'numeric', 'between:0.1,100'],
+            'precio' => ['required', 'numeric', 'gte:0.1'],
         ]);
 
         $precioNuevo = new Precio(

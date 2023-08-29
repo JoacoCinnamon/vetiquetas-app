@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CotizarController;
 use App\Http\Controllers\PrecioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TipoEtiquetaController;
@@ -19,8 +20,10 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
-});
+    return Inertia::render('Home');
+})->name('root');
+
+Route::get('/cotizar', CotizarController::class)->name('cotizar');
 
 Route::get('/inicio', function () {
     return Inertia::render('Dashboard');

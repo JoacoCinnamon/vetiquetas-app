@@ -1,4 +1,4 @@
-import AuthenticatedLayout from "@/Layouts/DefaultLayout";
+import Layout from "@/Layouts/DefaultLayout";
 import { Head, Link } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import formatDate from "@/utils/date";
@@ -28,7 +28,7 @@ function PreciosTr({ precios }: { precios: PrecioWithTipoEtiqueta[] | [] | undef
 
 export default function PreciosIndex({ auth, precios }: PageProps<{ precios: PrecioWithTipoEtiqueta[]; }>) {
   return (
-    <AuthenticatedLayout
+    <Layout
       user={auth.user}
       header={
         <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -71,6 +71,6 @@ export default function PreciosIndex({ auth, precios }: PageProps<{ precios: Pre
 
 
 
-    </AuthenticatedLayout>
+    </Layout>
   );
 }

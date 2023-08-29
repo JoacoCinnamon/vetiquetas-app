@@ -17,19 +17,21 @@ export interface MainNavItem extends NavItem {}
 export interface SidebarNavItem extends NavItemWithChildren {}
 
 interface VetiquetasConfig {
+  name: string
   mainNav: MainNavItem[]
   sidebarNav: SidebarNavItem[]
 }
 
 export const vetiquetasConfig: VetiquetasConfig = {
+  name: "Vetiquetas",
   mainNav: [
     {
       title: "Inicio",
-      href: "/",
+      href: route("inicio"),
     },
     {
       title: "Cotizar",
-      href: "/cotizar",
+      href: route("cotizar"),
     },
     {
       title: "Etiquetas",
@@ -50,7 +52,7 @@ export const vetiquetasConfig: VetiquetasConfig = {
     },
     {
       title: "Cotizar",
-      href: "/cotizar",
+      href: route("cotizar"),
       items: []
     },
     {
@@ -70,6 +72,11 @@ export const vetiquetasConfig: VetiquetasConfig = {
           items: []
         },
       ],
+    },
+    {
+      title: "Perfil",
+      href: route("perfil.edit"),
+      items: []
     },
   ],
 } 
