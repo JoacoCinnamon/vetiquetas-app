@@ -6,6 +6,7 @@ import { FormEventHandler } from "react";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { Header } from "@/Components/header";
 
 export default function TipoEtiquetaCreate({ auth }: PageProps) {
   const { data, setData, post, processing, errors } = useForm({
@@ -21,9 +22,7 @@ export default function TipoEtiquetaCreate({ auth }: PageProps) {
     <AuthenticatedLayout
       user={auth.user}
       header={
-        <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-          Tipos de etiquetas
-        </h2>
+        <Header heading="Tipo de etiquetas" />
       }
     >
       <Head title="Tipos de etiquetas" />

@@ -8,6 +8,7 @@ import TextInput from "@/Components/TextInput";
 import PrimaryButton from "@/Components/PrimaryButton";
 import formatDate from "@/utils/date";
 import { CANTIDAD_COLORES, MEDIDAS, Precio, TipoEtiqueta, TipoEtiquetaWithPrecios } from "@/types/models";
+import { Header } from "@/Components/header";
 
 
 function Precios({ precios }: { precios: Precio[] | [] | undefined }) {
@@ -67,10 +68,7 @@ export default function PrecioCreate({ auth, tipoEtiquetas }:
   if (!tipoEtiquetas || tipoEtiquetas.length === 0) {
     return <Layout
       user={auth.user}
-      header={
-        <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-          Precios
-        </h2>
+      header={<Header heading="Precios" />
       }
     >
       <Head title="Cambiar precios" />
@@ -103,9 +101,7 @@ export default function PrecioCreate({ auth, tipoEtiquetas }:
     <Layout
       user={auth.user}
       header={
-        <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-          Precios
-        </h2>
+        <Header heading="Precios" />
       }
     >
       <Head title="Cambiar precios" />

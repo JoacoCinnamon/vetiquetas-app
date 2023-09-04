@@ -35,8 +35,10 @@ export function MobileNav({ user }: { user: User | null }) {
         </MobileLink>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-2">
-            {vetiquetasConfig.sidebarNav.map((item, index) => (
-              <div key={index} className="flex flex-col space-y-3 pt-6">
+            {vetiquetasConfig.sidebarNav.map((item, index) => {
+              if (!user?.isAdmin && item.isPrivate) return null
+              if (!user && item.isProtected) return null
+              return (<div key={index} className="flex flex-col space-y-3 pt-6">
                 {item.href
                   ? <MobileLink
                     href={item.href}
@@ -71,7 +73,49 @@ export function MobileNav({ user }: { user: User | null }) {
                     </React.Fragment>
                   ))}
               </div>
-            ))}
+              )
+            })}
+            {
+              user === null
+                ? <>
+                  <div className="space-y-3 pt-6">
+                    <MobileLink
+                      href={route("iniciar-sesion")}
+                      onOpenChange={setOpen}
+                      className="text-muted-foreground text-sm font-extrabold hover:underline">
+                      Iniciar sesión
+                    </MobileLink>
+                  </div>
+                  <div className="space-y-3 pt-6">
+                    <MobileLink
+                      href={route("registrar")}
+                      onOpenChange={setOpen}
+                      className="text-muted-foreground text-sm font-extrabold hover:underline">
+                      Registrarse
+                    </MobileLink>
+                  </div>
+                </>
+                : <>
+                  <div className="space-y-3 pt-6">
+                    <MobileLink
+                      href={route("perfil.edit")}
+                      onOpenChange={setOpen}
+                      className="text-muted-foreground text-sm font-extrabold hover:underline">
+                      Perfil
+                    </MobileLink>
+                  </div>
+                  <div className="space-y-3 pt-6">
+                    <MobileLink
+                      href={route("cerrar-sesion")}
+                      as="button"
+                      method="post"
+                      onOpenChange={setOpen}
+                      className="text-muted-foreground text-sm font-extrabold hover:underline">
+                      Cerrar sesión
+                    </MobileLink>
+                  </div>
+                </>
+            }
           </div>
         </ScrollArea>
       </SheetContent>

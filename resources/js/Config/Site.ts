@@ -3,6 +3,7 @@ export interface NavItem {
   href?: string
   disabled?: boolean
   active?: boolean
+  isProtected?: boolean
   isPrivate?: boolean
   external?: boolean
   label?: string
@@ -12,9 +13,11 @@ export interface NavItemWithChildren extends NavItem {
   items: NavItemWithChildren[]
 }
 
-export interface MainNavItem extends NavItem {}
+export interface MainNavItem extends NavItem {
+  isActive: () => boolean
+}
 
-export interface SidebarNavItem extends NavItemWithChildren {}
+export interface SidebarNavItem extends NavItemWithChildren { }
 
 interface VetiquetasConfig {
   name: string
@@ -26,33 +29,47 @@ export const vetiquetasConfig: VetiquetasConfig = {
   name: "Vetiquetas",
   mainNav: [
     {
-      title: "Inicio",
-      href: route("inicio"),
-    },
-    {
       title: "Cotizar",
       href: route("cotizar"),
+      isActive: () => {
+        return route().current("cotizar");
+      }
+    },
+    {
+      title: "Inicio",
+      href: route("inicio"),
+      isProtected: true,
+      isActive: () => {
+        return route().current("inicio");
+      },
     },
     {
       title: "Etiquetas",
       href: route("administracion.etiquetas.index"),
-      isPrivate: true
+      isPrivate: true,
+      isActive: () => {
+        return route().current("administracion.etiquetas.index");
+      },
     },
     {
       title: "Precios",
       href: route("administracion.precios.index"),
-      isPrivate: true
+      isPrivate: true,
+      isActive: () => {
+        return route().current("administracion.precios.index");
+      }
     },
   ],
   sidebarNav: [
     {
-      title: "Inicio",
-      href: "/",
+      title: "Cotizar",
+      href: route("cotizar"),
       items: []
     },
     {
-      title: "Cotizar",
-      href: route("cotizar"),
+      title: "Inicio",
+      href: route("inicio"),
+      isProtected: true,
       items: []
     },
     {
@@ -72,11 +89,6 @@ export const vetiquetasConfig: VetiquetasConfig = {
           items: []
         },
       ],
-    },
-    {
-      title: "Perfil",
-      href: route("perfil.edit"),
-      items: []
     },
   ],
 } 

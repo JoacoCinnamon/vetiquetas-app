@@ -7,19 +7,37 @@ import {
 } from "@/Components/ui/dropdown-menu"
 import { User } from "@/types"
 import { Link } from "@inertiajs/react"
-import NavLink from "./NavLink"
-import { Button } from "./ui/button"
-
+import { Button, buttonVariants } from "./ui/button"
+import { cn } from "@/lib/utils"
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: User | null
 }
 
 export function UserDropdown({ user }: UserAccountNavProps) {
-  if (!user) return null
+  if (!user) return <nav className="flex gap-3">
+    <Link
+      href={route("iniciar-sesion")}
+      className={cn(
+        buttonVariants({ variant: "outline" }),
+        "px-4"
+      )}
+    >
+      Iniciar sesión
+    </Link>
+    <Link
+      href={route("registrar")}
+      className={cn(
+        buttonVariants({ variant: "outline" }),
+        "px-4"
+      )}
+    >
+      Registrarse
+    </Link>
+  </nav>
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="flex justify-center items-center">
+      <DropdownMenuTrigger asChild className="hidden md:flex justify-center items-center">
         <Button variant="outline">
           {user.nombre} {user.apellido} <svg
             className="ml-2 -mr-0.5 h-4 w-4"
@@ -35,7 +53,7 @@ export function UserDropdown({ user }: UserAccountNavProps) {
           </svg>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent className="hidden md:flex md:flex-col" align="end">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
             {user.nombre && <p className="font-medium">{user.nombre} {user.apellido}</p>}

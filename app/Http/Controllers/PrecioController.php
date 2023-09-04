@@ -13,9 +13,9 @@ class PrecioController extends Controller {
      */
     public function index() {
         $this->authorize('viewAny', Precio::class);
-        $precios = Precio::all()->load('tipoEtiqueta:id,nombre');
+        $precios = Precio::paginate(56)->load('tipoEtiqueta:id,nombre')->sortBy('tipo_etiqueta_id');
         return Inertia::render('Administracion/Precios/Index', [
-            'precios' => fn () => $precios->toArray()
+            'precios' => fn () => $precios
         ]);
     }
 

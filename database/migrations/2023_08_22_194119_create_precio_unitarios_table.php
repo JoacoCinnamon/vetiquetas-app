@@ -18,7 +18,7 @@ return new class () extends Migration {
             ->onDelete('cascade');
             $table->float('medida');
             $table->integer('cantidad_colores');
-            $table->float('precio');
+            $table->decimal('precio');
             $table->timestamp('fecha_desde')->useCurrent();
             $table->timestamp('fecha_hasta')->default(null)->nullable()->index();
         });
