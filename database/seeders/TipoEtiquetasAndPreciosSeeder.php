@@ -13,8 +13,8 @@ class TipoEtiquetasAndPreciosSeeder extends Seeder {
     // php artisan db:seed --class=Database\Seeders\TipoEtiquetasAndPreciosSeeder
     public function run() {
         $etiquetaTest = TipoEtiqueta::query()->where('nombre', 'Etiqueta Test')->first();
-        $etiquetaTest->precios()->where('id', $etiquetaTest->id)->delete();
-        $etiquetaTest->delete();
+        $etiquetaTest?->precios()->where('id', $etiquetaTest->id)->delete();
+        $etiquetaTest?->delete();
 
         // Crear un tipo de etiqueta cualquiera
         $tipoEtiqueta = TipoEtiqueta::create(['nombre' => 'Etiqueta Test']);
@@ -27,9 +27,9 @@ class TipoEtiquetasAndPreciosSeeder extends Seeder {
             foreach (self::$CANTIDAD_COLORES as $cantidadColores) {
                 $precio *= 1.02;
                 $tipoEtiqueta->precios()->create([
-                  'medida' => $medida,
-                  'cantidad_colores' => $cantidadColores,
-                  'precio' => $precio
+                    'medida' => $medida,
+                    'cantidad_colores' => $cantidadColores,
+                    'precio' => $precio
                 ]);
             }
         }
