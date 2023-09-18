@@ -35,7 +35,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['role:admin', 'auth'])->prefix('administracion')->name('administracion.')->group(function () {
-    Route::resource('/etiquetas', TipoEtiquetaController::class);
+    Route::resource('/etiquetas', TipoEtiquetaController::class)->except(['show', 'create', 'edit']);
+
     Route::resource('/precios', PrecioController::class);
 });
 

@@ -4,7 +4,6 @@ import Layout from "@/Layouts/DefaultLayout";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group"
-import * as z from "zod"
 
 import { Button } from "@/Components/ui/button"
 import {
@@ -17,39 +16,21 @@ import {
   FormMessage,
 } from "@/Components/ui/form"
 import { Input } from "@/Components/ui/input"
-import { CANTIDAD_COLORES, MEDIDAS, TIPO_ENTREGA, TIPO_ENTREGA_PORCENTAJES, TipoEtiquetaWithPrecios } from "@/types/models";
+import { CANTIDAD_COLORES, MEDIDAS, TipoEtiquetaWithPrecios } from "@/types/models";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/Components/ui/select";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
-import { Label } from "@/Components/ui/label";
+import { Card, CardContent, CardFooter, CardHeader } from "@/Components/ui/card";
 import { Header } from "@/Components/header";
 import { useState } from "react";
 import { formatPrecio } from "@/utils/currencies";
-
-const CotizarFormSchema = z.object({
-  tipoEtiquetaId: z.coerce.number({ required_error: "Ingrese el tipo de etiqueta" })
-    .min(1, { message: "Ingrese el tipo de etiqueta" }),
-  cantidadColores: z.coerce.number({ required_error: "Ingrese la cantidad de colores" })
-    .min(1, { message: "Ingrese la cantidad de colores" })
-    .max(7, { message: "Ingrese la cantidad de colores" }),
-  ancho: z.coerce.number({ required_error: "Ingrese el ancho" })
-    .min(2, { message: "Ingrese el ancho" }),
-  largo: z.coerce.number({ invalid_type_error: "Ingrese un número", required_error: "Ingrese el largo" })
-    .min(2, { message: "El mínimo de largo son 2mm", })
-    .max(300, { message: "El máximo de largo son 300mm" }),
-  tipoEntrega: z.enum(TIPO_ENTREGA, {
-    required_error: "Elija un tipo de entrega.",
-    invalid_type_error: "Elija un tipo de entrega.",
-  }),
-  cantidadUnidades: z.coerce.number({ invalid_type_error: "Ingrese un número", required_error: "Ingrese la cantidad de unidades" })
-    .min(1500, { message: "El mínimo de cantidad de unidades son 1500", })
-})
+import { CotizacionFormSchema, cotizacionFormSchema, tipoEntregaForm } from "@/lib/validations/cotizacion";
+import { Head } from "@inertiajs/react";
 
 export default function Cotizar({
   auth,
   tipoEtiquetas
 }: PageProps<{ tipoEtiquetas: TipoEtiquetaWithPrecios[] }>) {
-  const form = useForm<z.infer<typeof CotizarFormSchema>>({
-    resolver: zodResolver(CotizarFormSchema),
+  const form = useForm<CotizacionFormSchema>({
+    resolver: zodResolver(cotizacionFormSchema),
     defaultValues: {
       tipoEtiquetaId: -1,
       cantidadColores: -1,
@@ -63,10 +44,7 @@ export default function Cotizar({
   const selectedTipoEtiqueta = filteredTipoEtiquetas.find(tipoEtiqueta => tipoEtiqueta.id === form.getValues().tipoEtiquetaId);
   const filteredPrecios = selectedTipoEtiqueta?.precios || [];
 
-  const [precioUnitario, setPrecioUnitario] = useState<number | null>(null);
-  const precioTotal = precioUnitario
-    ? precioUnitario * form.getValues("cantidadUnidades")
-    : 0;
+  const [precios, setPrecios] = useState<{ precioUnitario: number, precioTotal: number } | null>(null);
 
   if (filteredTipoEtiquetas.length === 0) {
     return <Layout user={auth.user}>
@@ -77,14 +55,14 @@ export default function Cotizar({
   }
 
 
-  const onSubmit = (data: z.infer<typeof CotizarFormSchema>) => {
-    const { cantidadColores, ancho, largo, tipoEntrega } = data;
+  const onSubmit = (data: CotizacionFormSchema) => {
+    const { cantidadColores, ancho, largo, tipoEntrega, cantidadUnidades } = data;
     const precio = filteredPrecios.find(p => (p.medida === ancho && p.cantidad_colores === cantidadColores));
     if (!precio) return;
-    const tipoEntregaAumento = TIPO_ENTREGA_PORCENTAJES[tipoEntrega];
+    const { incrementa: tipoEntregaAumento } = tipoEntregaForm[tipoEntrega];
     const precioUnitario = (precio.precio * tipoEntregaAumento) / (1000 / largo);
-    setPrecioUnitario(precioUnitario);
-
+    const precioTotal = precioUnitario * cantidadUnidades;
+    setPrecios({ precioUnitario, precioTotal });
   }
 
   return (
@@ -93,13 +71,14 @@ export default function Cotizar({
         user={auth.user}
         header={<Header heading="Cotizador" text="Cotize sus etiquetas según sus necesidades." />}
       >
-        <section className="h-auto preview flex min-h-[350px] w-full justify-center p-10 items-center">
+        <Head title="Cotizar">
+          <meta name="description" content="Cotizadora de pedidos de etiquetas bordadas" />
+        </Head>
+        <section className="h-auto preview flex min-h-[350px] w-full justify-center p-6 items-center">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full lg:w-2/5">
               <Card>
                 <CardHeader>
-                  <CardTitle>
-                  </CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-6">
                   <div className="grid md:grid-cols-2 gap-2">
@@ -112,13 +91,15 @@ export default function Cotizar({
                           <Select
                             onValueChange={(value: string) => {
                               const newTipoEtiquetaId = parseInt(value);
-                              form.resetField("ancho"); // Reset the "ancho" field value when "Tipo de etiqueta" changes
+                              form.resetField("ancho", { keepError: true }); // Reset the "ancho" field value when "Tipo de etiqueta" changes
                               field.onChange(newTipoEtiquetaId);
                             }}
                           >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Seleccione el tipo de etiqueta"
-                                aria-label={selectedTipoEtiqueta?.nombre}>
+                            <SelectTrigger aria-label="Tipo de etiqueta">
+                              <SelectValue
+                                placeholder="Seleccione el tipo de etiqueta"
+                                aria-label={selectedTipoEtiqueta?.nombre}
+                              >
                               </SelectValue>
                             </SelectTrigger>
                             <SelectContent>
@@ -142,9 +123,12 @@ export default function Cotizar({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Cantidad de colores</FormLabel>
-                          <Select onValueChange={field.onChange} disabled={filteredPrecios.length < 1}>
+                          <Select
+                            onValueChange={field.onChange}
+                            disabled={filteredPrecios.length < 1}
+                          >
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger aria-label="Cantidad de colores">
                                 <SelectValue
                                   placeholder={"Seleccione la cantidad de colores"}
                                 />
@@ -175,9 +159,12 @@ export default function Cotizar({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Ancho (mm)</FormLabel>
-                          <Select onValueChange={field.onChange} disabled={filteredPrecios.length < 1}>
+                          <Select
+                            onValueChange={field.onChange}
+                            disabled={filteredPrecios.length < 1}
+                          >
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger aria-label="Ancho de la etiqueta">
                                 <SelectValue
                                   placeholder={filteredPrecios
                                     ? "Seleccione el ancho de la etiqueta"
@@ -230,46 +217,16 @@ export default function Cotizar({
                               defaultValue={field.value}
                               className="flex flex-col space-y-1"
                             >
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="rollo" />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  En rollo
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="rollo_apresto" />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  En rollo + apresto (+10%)
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="cortada" />
-                                </FormControl>
-                                <FormLabel className="font-normal">Cortada (+15%)</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="cortada_apresto" />
-                                </FormControl>
-                                <FormLabel className="font-normal">Cortada + apresto (+20%)</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="cortada_doblada_medio" />
-                                </FormControl>
-                                <FormLabel className="font-normal">Cortada y doblada al medio (+25%)</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="cortada_doblada_puntas" />
-                                </FormControl>
-                                <FormLabel className="font-normal">Cortada y doblada en las puntas (+25%)</FormLabel>
-                              </FormItem>
+                              {Object.entries(tipoEntregaForm).map(([tipoEntregaValue, { label }], index) => {
+                                return <FormItem className="flex items-center space-x-3 space-y-0" key={index}>
+                                  <FormControl className="w-4 h-4">
+                                    <RadioGroupItem value={tipoEntregaValue} aria-label={label} />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {label}
+                                  </FormLabel>
+                                </FormItem>
+                              })}
                             </RadioGroup>
                           </FormControl>
                           <FormMessage />
@@ -294,9 +251,9 @@ export default function Cotizar({
                   </div>
 
                   {
-                    precioUnitario && <div>
-                      <h1>Cada etiqueta te cuesta: </h1> <span>{formatPrecio(precioUnitario)} pesos</span>
-                      <h1>Total a pagar: </h1> <span>{formatPrecio(precioTotal)} pesos</span>
+                    precios && <div>
+                      <h2>Cada etiqueta te cuesta: </h2> <span>{formatPrecio(precios.precioUnitario)} pesos</span>
+                      <h2>Total a pagar: </h2> <span>{formatPrecio(precios.precioTotal)} pesos</span>
                     </div>
                   }
                 </CardContent>

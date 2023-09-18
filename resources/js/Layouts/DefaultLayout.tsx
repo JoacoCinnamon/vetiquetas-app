@@ -20,9 +20,9 @@ export default function Layout({
                 </nav>
             </header>
             {header &&
-                <header className="shadow max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div className="shadow max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {header}
-                </header>
+                </div>
             }
             <main className="flex-1">{children}</main>
             <SiteFooter />

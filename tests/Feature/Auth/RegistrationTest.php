@@ -1,8 +1,9 @@
 <?php
 
 use App\Providers\RouteServiceProvider;
+use Database\Seeders\RolesAndPermissionsSeeder;
 
-use function Pest\Laravel\{get, post, assertAuthenticated, assertGuest};
+use function Pest\Laravel\{get, post, assertAuthenticated, assertGuest, seed};
 
 test('registration screen can be rendered', function () {
     $response = get('/registrar');
@@ -11,6 +12,8 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
+    seed(RolesAndPermissionsSeeder::class);
+
     $response = post('/registrar', [
         'nombre' => 'Test Name',
         'apellido' => 'Test Lastname',

@@ -36,17 +36,17 @@ class PrecioController extends Controller {
         $this->authorize('create', Precio::class);
 
         $validated = $request->validate([
-            'tipo_etiqueta_id' => ['required', 'numeric', 'exists:'.TipoEtiqueta::class.',id'],
-            'medida' => ['required', 'numeric','between:10,110'],
+            'tipo_etiqueta_id' => ['required', 'numeric', 'exists:' . TipoEtiqueta::class . ',id'],
+            'medida' => ['required', 'numeric', 'between:10,110'],
             'cantidad_colores' => ['required', 'numeric', 'between:1,7'],
             'precio' => ['required', 'numeric', 'gte:0.1'],
         ]);
 
         $precioNuevo = new Precio(
             [
-            'medida' => $validated['medida'],
-            'cantidad_colores' => $validated['cantidad_colores'],
-            'precio' => $validated['precio'],
+                'medida' => $validated['medida'],
+                'cantidad_colores' => $validated['cantidad_colores'],
+                'precio' => $validated['precio'],
             ]
         );
         $ultimoPrecio = Precio::getUltimoPrecio(

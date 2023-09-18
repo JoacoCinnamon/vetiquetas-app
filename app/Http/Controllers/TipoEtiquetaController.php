@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TipoEtiqueta;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class TipoEtiquetaController extends Controller {
@@ -12,17 +13,9 @@ class TipoEtiquetaController extends Controller {
      */
     public function index() {
         $this->authorize('viewAny', TipoEtiqueta::class);
-        return Inertia::render('Administracion/TipoEtiquetas/Index', [
+        return Inertia::render('Administracion/TipoEtiquetas', [
             'tipo_etiquetas' => TipoEtiqueta::all(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create() {
-        $this->authorize('create', TipoEtiqueta::class);
-        return Inertia::render('Administracion/TipoEtiquetas/Create');
     }
 
     /**
@@ -34,36 +27,41 @@ class TipoEtiquetaController extends Controller {
         $validated = $request->validate([
             'nombre' => ['required', 'string', 'max:255', 'unique:' . TipoEtiqueta::class]
         ]);
+
         TipoEtiqueta::create($validated);
 
-        return Inertia::location(route('administracion.etiquetas.index'));
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(TipoEtiqueta $tipoEtiqueta) {
-        $this->authorize('view', $tipoEtiqueta);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TipoEtiqueta $tipoEtiqueta) {
-        $this->authorize('update', $tipoEtiqueta);
+        return to_route('administracion.etiquetas.index')->with('success', 'Tipo etiqueta creado correctamente');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TipoEtiqueta $tipoEtiqueta) {
+    public function update(Request $request, int $id) {
+        $tipoEtiqueta = TipoEtiqueta::find($id);
         $this->authorize('update', $tipoEtiqueta);
+
+        if ($tipoEtiqueta) {
+            $validated = $request->validate([
+                'nombre' => ['required','string','max:255',Rule::unique('tipo_etiquetas')->ignore($tipoEtiqueta)]
+            ]);
+
+            $tipoEtiqueta->update($validated);
+
+            return to_route('administracion.etiquetas.index');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TipoEtiqueta $tipoEtiqueta) {
+    public function destroy(int $id) {
+        $tipoEtiqueta = TipoEtiqueta::find($id);
         $this->authorize('delete', $tipoEtiqueta);
+
+        if ($tipoEtiqueta) {
+            $tipoEtiqueta->delete();
+        }
+
+        return to_route('administracion.etiquetas.index');
     }
 }

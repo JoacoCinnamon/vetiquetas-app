@@ -26,7 +26,7 @@ function PreciosTable({ precios }: { precios: PrecioWithTipoEtiqueta[] | [] | un
 
   return (
     <Table>
-      <TableCaption>Tipos de etiquetas.</TableCaption>
+      <TableCaption>Precios.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px]">Medida (mm)</TableHead>
