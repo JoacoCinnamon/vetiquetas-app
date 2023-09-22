@@ -1,15 +1,27 @@
 
+const VETIQUETAS_FB_ID = "100064729897144"
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 export default function SiteFooter() {
   return <footer>
     <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
       <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-        <a href="#_"
-          className="text-xl font-black leading-none select-none logo">Vetiquetas<span className="text-indigo-600">.</span></a>
+        <a
+          onClick={(e) => {
+            if (isMobile) {
+              e.preventDefault();
+              window.location.href = `fb://page/${VETIQUETAS_FB_ID}`;
+            }
+          }}
+          href="#_"
+          className="text-xl font-black leading-none select-none logo">
+          Vetiquetas<span className="text-indigo-600">.</span>
+        </a>
         <p className="mt-4 text-sm text-gray-400 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0">&copy; {new Date().getFullYear()} Vetiquetas - Cotizador y gestor de pedidos
         </p>
       </div>
       <span className="inline-flex items-center justify-center mt-4 space-x-5 sm:justify-start">
-        <a href="https://www.facebook.com/profile.php?id=100064729897144" target="_blank"
+        <a href={`https://www.facebook.com/profile.php?id=${VETIQUETAS_FB_ID}`} target="_blank"
           rel="noreferrer" className="text-gray-500 hover:text-gray-400">
           <span className="sr-only">Facebook</span>
           <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
