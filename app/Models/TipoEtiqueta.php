@@ -33,4 +33,11 @@ class TipoEtiqueta extends Model {
     public function precios(): HasMany {
         return $this->hasMany(Precio::class);
     }
+
+    /**
+     * Obtener los diseños del tipo de etiqueta.
+     */
+    public function diseños(): HasMany {
+        return $this->hasMany(Disenio::class);
+    }
 }

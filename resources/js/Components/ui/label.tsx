@@ -11,7 +11,7 @@ const labelVariants = cva(
 const Label = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
-    VariantProps<typeof labelVariants>
+  VariantProps<typeof labelVariants>
 >(({ className, ...props }, ref) => (
   <LabelPrimitive.Root
     ref={ref}
@@ -21,4 +21,21 @@ const Label = React.forwardRef<
 ))
 Label.displayName = LabelPrimitive.Root.displayName
 
-export { Label }
+const LabelError = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement> & { message: string | undefined }
+>(({ message, className, ...props }, ref) => {
+  return message
+    ? (
+      <p
+        ref={ref}
+        className={cn("text-[0.8rem] text-destructive", className)}
+        {...props}
+      >
+        {message}
+      </p>
+    )
+    : null
+})
+
+export { Label, LabelError }

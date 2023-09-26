@@ -44,6 +44,14 @@ export const vetiquetasConfig: VetiquetasConfig = {
       },
     },
     {
+      title: "Mis diseños",
+      href: route("disenios.index"),
+      isProtected: true,
+      isActive: () => {
+        return route().current("disenios.index");
+      },
+    },
+    {
       title: "Etiquetas",
       href: route("administracion.etiquetas.index"),
       isPrivate: true,
@@ -69,6 +77,12 @@ export const vetiquetasConfig: VetiquetasConfig = {
     {
       title: "Inicio",
       href: route("inicio"),
+      isProtected: true,
+      items: []
+    },
+    {
+      title: "Mis diseños",
+      href: route("disenios.index"),
       isProtected: true,
       items: []
     },

@@ -18,9 +18,8 @@ class DatabaseSeeder extends Seeder {
         // ]);
 
         // Llamando a los seeders de los roles, permisos y al del usuario administrador
-        $this->call(RolesAndPermissionsSeeder::class);
-        $this->call(AdminSeeder::class);
+        $this->call([RolesAndPermissionsSeeder::class, AdminSeeder::class]);
 
-        app()->isLocal($this->call(TipoEtiquetasAndPreciosSeeder::class));
+        app()->isLocal($this->call([TipoEtiquetasAndPreciosSeeder::class, ColoresSeeder::class]));
     }
 }

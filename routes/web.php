@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CotizarController;
+use App\Http\Controllers\DisenioController;
 use App\Http\Controllers\PrecioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TipoEtiquetaController;
@@ -32,6 +33,8 @@ Route::get('/inicio', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('perfil.edit');
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('perfil.update');
+
+    Route::resource('/disenios', DisenioController::class);
 });
 
 Route::middleware(['role:admin', 'auth'])->prefix('administracion')->name('administracion.')->group(function () {

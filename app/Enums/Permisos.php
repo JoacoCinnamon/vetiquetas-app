@@ -12,6 +12,12 @@ enum Permisos: string {
     case ActualizarTiposEtiquetas = 'actualizar tipos etiquetas';
     case BorrarTiposEtiquetas = 'borrar tipos etiquetas';
 
+    case VerDiseños = 'ver diseños';
+    case VertTodosLosDiseños = 'ver todos los diseños';
+    case CrearDiseños = 'crear diseños';
+    case ActualizarDiseños = 'actualizar diseños';
+    case BorrarDiseños = 'borrar diseños';
+
     /**
      * Return the value of the enum
      */

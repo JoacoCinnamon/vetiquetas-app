@@ -5,6 +5,7 @@ import { Button, buttonVariants } from "../ui/button";
 import { Input } from "../ui/input";
 import Modal from "../ui/modal";
 import { useForm as useInertiaForm } from "@inertiajs/react";
+import { LabelError } from "../ui/label";
 
 export function ModalAgregarEtiqueta() {
   const [open, setOpen] = useState(false);
@@ -41,10 +42,7 @@ export function ModalAgregarEtiqueta() {
                 <Input placeholder="Tafeta" onChange={(e) => {
                   setData("nombre", e.target.value);
                 }} />
-                {errors.nombre && <p className="text-[0.8rem] font-medium text-destructive">
-                  {errors.nombre}
-                </p>
-                }
+                <LabelError message={errors.nombre} />
               </div>
             </div>
             <Modal.Footer className="gap-2 sm:gap-0">

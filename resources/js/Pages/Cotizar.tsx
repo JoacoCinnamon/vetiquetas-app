@@ -64,7 +64,6 @@ export default function Cotizar({
     const precioTotal = precioUnitario * cantidadUnidades;
     setPrecios({ precioUnitario, precioTotal });
   }
-
   return (
     <>
       <Layout
