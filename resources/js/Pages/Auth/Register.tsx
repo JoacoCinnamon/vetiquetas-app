@@ -1,10 +1,11 @@
 import { useEffect, FormEventHandler } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { Label, LabelError } from "@/Components/ui/label";
+import { Input } from "@/Components/ui/input";
+import { Button, buttonVariants } from "@/Components/ui/button";
+import { Spinner } from "@/Components/spinner";
+import { cn } from "@/lib/utils";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -35,159 +36,144 @@ export default function Register() {
             <Head title="Registrarse" />
 
             <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="nombre" value="Nombre" />
+                <fieldset disabled={processing} className="group">
+                    <div className="space-y-2">
+                        <Label htmlFor="nombre">Nombre</Label>
 
-                    <TextInput
-                        id="nombre"
-                        name="nombre"
-                        value={data.nombre}
-                        className="mt-1 block w-full"
-                        autoComplete="nombre"
-                        isFocused={true}
-                        onChange={(e) => setData("nombre", e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.nombre} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="apellido" value="Apellido" />
-
-                    <TextInput
-                        id="apellido"
-                        name="apellido"
-                        value={data.apellido}
-                        className="mt-1 block w-full"
-                        autoComplete="apellido"
-                        isFocused={true}
-                        onChange={(e) => setData("apellido", e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.apellido} className="mt-2" />
-                </div>
-
-                <section className="md:flex md:flex-auto md:justify-between md:gap-2">
-                    <div className="mt-4 md:flex md:flex-col w-full">
-                        <InputLabel htmlFor="documento" value="Documento" />
-
-                        <TextInput
-                            id="documento"
-                            name="documento"
-                            value={data.documento}
-                            maxLength={8}
+                        <Input
+                            id="nombre"
+                            name="nombre"
+                            value={data.nombre}
                             className="mt-1 block w-full"
-                            autoComplete="documento"
-                            isFocused={true}
-                            onChange={(e) =>
-                                setData("documento", e.target.value)
-                            }
+                            autoComplete="nombre"
+                            autoFocus={true}
+                            onChange={(e) => setData("nombre", e.target.value)}
                             required
                         />
 
-                        <InputError
-                            message={errors.documento}
-                            className="mt-2"
-                        />
+                        <LabelError message={errors.nombre} className="mt-2" />
                     </div>
 
-                    <div className="mt-4 md:flex md:flex-col w-full">
-                        <InputLabel htmlFor="cuit_cuil" value="CUIT/CUIL" />
+                    <div className="space-y-2 mt-4">
+                        <Label htmlFor="apellido">Apellido</Label>
 
-                        <TextInput
-                            id="cuit_cuil"
-                            name="cuit_cuil"
-                            value={data.cuit_cuil}
-                            maxLength={13}
+                        <Input
+                            id="apellido"
+                            name="apellido"
+                            value={data.apellido}
                             className="mt-1 block w-full"
-                            autoComplete="cuit_cuil"
-                            isFocused={true}
-                            onChange={(e) =>
-                                setData("cuit_cuil", e.target.value)
-                            }
+                            autoComplete="apellido"
+                            autoFocus={true}
+                            onChange={(e) => setData("apellido", e.target.value)}
                             required
                         />
 
-                        <InputError
-                            message={errors.cuit_cuil}
-                            className="mt-2"
-                        />
+                        <LabelError message={errors.apellido} className="mt-2" />
                     </div>
-                </section>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Correo electrónico" />
+                    <section className="md:flex md:flex-auto md:justify-between md:gap-2">
+                        <div className="space-y-2 mt-4 md:flex md:flex-col w-full">
+                            <Label htmlFor="documento">Documento</Label>
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData("email", e.target.value)}
-                        required
-                    />
+                            <Input
+                                id="documento"
+                                name="documento"
+                                value={data.documento}
+                                className="mt-1 block w-full"
+                                autoComplete="documento"
+                                autoFocus={true}
+                                onChange={(e) => setData("documento", e.target.value)}
+                                required
+                            />
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                            <LabelError message={errors.documento} className="mt-2" />
+                        </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Contraseña" />
+                        <div className="space-y-2 mt-4 md:flex md:flex-col w-full">
+                            <Label htmlFor="cuit_cuil">CUIT/CUIL</Label>
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData("password", e.target.value)}
-                        required
-                    />
+                            <Input
+                                id="cuit_cuil"
+                                name="cuit_cuil"
+                                value={data.cuit_cuil}
+                                className="mt-1 block w-full"
+                                autoComplete="cuit_cuil"
+                                autoFocus={true}
+                                onChange={(e) => setData("cuit_cuil", e.target.value)}
+                                required
+                            />
 
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
+                            <LabelError message={errors.cuit_cuil} className="mt-2" />
+                        </div>
+                    </section>
 
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirmar contraseña"
-                    />
+                    <div className="space-y-2 mt-4">
+                        <Label htmlFor="email">Correo electrónico</Label>
 
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData("password_confirmation", e.target.value)
-                        }
-                        required
-                    />
+                        <Input value={data.email}
+                            type="email"
+                            id="email"
+                            name="email"
+                            className="mt-1 block w-full"
+                            autoComplete="email"
+                            onChange={(e) => setData("email", e.target.value)}
+                            required
+                        />
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
+                        <LabelError className="mt-2" message={errors.email} />
+                    </div>
 
-                <div className="flex items-center justify-end mt-4">
-                    <Link
-                        href={route("iniciar-sesion")}
-                        className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                    >
-                        ¿Ya estás registrado?
-                    </Link>
+                    <div className="space-y-2 mt-4">
+                        <Label htmlFor="password">Contraseña</Label>
 
-                    <PrimaryButton className="ml-4" disabled={processing}>
-                        Registrar
-                    </PrimaryButton>
-                </div>
+                        <Input
+                            id="password"
+                            name="password"
+                            value={data.password}
+                            className="mt-1 block w-full"
+                            autoComplete="password"
+                            autoFocus={true}
+                            onChange={(e) => setData("password", e.target.value)}
+                            required
+                        />
+
+                        <LabelError message={errors.password} className="mt-2" />
+                    </div>
+
+                    <div className="space-y-2 mt-4">
+                        <Label htmlFor="password_confirmation">Confirmar contraseña</Label>
+
+                        <Input
+                            id="password_confirmation"
+                            name="password_confirmation"
+                            value={data.password_confirmation}
+                            className="mt-1 block w-full"
+                            autoComplete="password_confirmation"
+                            autoFocus={true}
+                            onChange={(e) => setData("password_confirmation", e.target.value)}
+                            required
+                        />
+
+                        <LabelError message={errors.password_confirmation} className="mt-2" />
+                    </div>
+
+                    <div className="flex items-center justify-end mt-4">
+                        {!processing && (
+                            <Link
+                                disabled={processing}
+                                href={route("iniciar-sesion")}
+                                className={cn(buttonVariants({ variant: "link" }), "text-foreground/70 hover:text-foreground focus:text-foreground group-disabled:pointer-events-none")}
+                            >
+                                ¿Ya estás registrado?
+                            </Link>
+                        )}
+
+                        <Button className="inline-flex items-center justify-center px-4 py-2 font-medium  group-disabled:pointer-events-none ml-4">
+                            <Spinner className="absolute h-5 group-enabled:opacity-0" />
+                            <span className="group-disabled:opacity-0">Registrar</span>
+                        </Button>
+                    </div>
+                </fieldset>
             </form>
         </GuestLayout>
     );
