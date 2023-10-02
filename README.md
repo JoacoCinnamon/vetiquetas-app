@@ -53,19 +53,25 @@ cp .env.example .env
 
 Asegurarse siempre de configurar las variables de la base de datos .
 
-#### 4. Generar una nueva clave de aplicación:
-
-```
-php artisan key:generate
-```
-
-#### 5. Instala las Dependencias de Node.js
+#### 4. Instala las Dependencias de Node.js
 
 ```
 npm install
 ```
 
-#### 6. Correr las migraciones para crear las tablas de la base de datos y los seeders para llenar la base con el usuario por defecto, y algunos datos demás:
+#### 5. Generar una nueva clave de aplicación:
+
+```
+php artisan key:generate
+```
+
+#### 6. Generar un enlace simbólico para que los archivos sean accesibles desde la web:
+
+```
+php artisan storage:link
+```
+
+#### 7. Correr las migraciones para crear las tablas de la base de datos y los seeders para llenar la base con el usuario por defecto, y algunos datos demás:
 
 ```
 php artisan migrate
