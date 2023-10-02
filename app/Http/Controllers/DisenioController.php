@@ -78,6 +78,7 @@ class DisenioController extends Controller {
      */
     public function update(Request $request, Disenio $disenio) {
         $this->authorize('update', $disenio);
+        // TODO: SOLO SI NO TIENE PEDIDOS
     }
 
     /**
@@ -85,5 +86,6 @@ class DisenioController extends Controller {
      */
     public function destroy(Disenio $disenio) {
         $this->authorize('delete', $disenio);
+        // TODO: SOLO SI NO TIENE PEDIDOS
     }
 }

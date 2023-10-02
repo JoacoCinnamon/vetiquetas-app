@@ -46,6 +46,7 @@ function TipoEtiquetasTable({ tipo_etiquetas }: { tipo_etiquetas: TipoEtiqueta[]
         <TableRow>
           <TableHead>Fecha de creación</TableHead>
           <TableHead className="text-right">Tipo de etiqueta</TableHead>
+          <TableHead>{""}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

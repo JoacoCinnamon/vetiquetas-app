@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['role:admin', 'auth'])->prefix('administracion')->name('administracion.')->group(function () {
     Route::resource('/etiquetas', TipoEtiquetaController::class)->except(['show', 'create', 'edit']);
 
+    Route::post('/precios/aumentar', [PrecioController::class, 'aumentar'])->name('precios.aumentar');
     Route::resource('/precios', PrecioController::class);
 });
 

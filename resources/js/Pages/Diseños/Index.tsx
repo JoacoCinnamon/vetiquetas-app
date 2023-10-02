@@ -64,7 +64,7 @@ function DiseñosHeader() {
   </Header >
 }
 
-export default function PreciosIndex({ auth, diseños }: PageProps<{ diseños: Diseño[] | undefined; }>) {
+export default function DiseñosIndex({ auth, diseños }: PageProps<{ diseños: Diseño[] | undefined; }>) {
 
   return (
     <AuthenticatedLayout

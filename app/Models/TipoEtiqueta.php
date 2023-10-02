@@ -23,7 +23,8 @@ class TipoEtiqueta extends Model {
     public static function ultimosPrecios() {
         return self::with(['precios' => function (Builder $query) {
             $query->whereNull('fecha_hasta')
-            ->orderBy('medida');
+            ->orderBy('medida')
+            ->orderBy('cantidad_colores');
         }])->get();
     }
 

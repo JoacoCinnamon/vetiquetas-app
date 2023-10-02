@@ -15,12 +15,7 @@ import { Input } from "@/Components/ui/input";
 import { Spinner } from "@/Components/spinner";
 
 
-function DiseñosHeader() {
-  return <Header heading="Crear tu diseño" text="Armá tu diseño a medida">
-  </Header >
-}
-
-export default function PreciosIndex({
+export default function DiseñosCreate({
   auth,
   tipoEtiquetas,
   colores
@@ -98,7 +93,7 @@ export default function PreciosIndex({
                       id="nombre"
                       name="nombre"
                       autoComplete="nombre"
-                      placeholder="El mejor"
+                      placeholder="Vetiqueta"
                       onChange={(e) => setData("nombre", e.target.value)}
                       required
                     />
@@ -165,8 +160,8 @@ export default function PreciosIndex({
 
                   <div className="grid md:grid-cols-2 gap-2">
                     {data.colores.map((color, index) => {
-                      // Ignorar este error de typescript
-                      const colorError = errors[`colores.${index}.id`];
+                      // @ts-ignore 
+                      const colorError = errors[`colores.${index}.id`] as string | undefined;
                       return (
                         <div key={index} className="space-y-2">
                           <Label>Color {index + 1}</Label>

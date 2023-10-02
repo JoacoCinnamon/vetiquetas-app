@@ -14,6 +14,9 @@ import {
   TableRow,
 } from "@/Components/ui/table"
 import { formatPrecio } from "@/utils/currencies";
+import { PlusIcon } from "@/Components/icons";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/Components/ui/button";
 
 function PreciosTable({ precios }: { precios: PrecioWithTipoEtiqueta[] | [] | undefined }) {
   if (!precios || precios.length === 0) {
@@ -51,11 +54,14 @@ function PreciosTable({ precios }: { precios: PrecioWithTipoEtiqueta[] | [] | un
 
 function PreciosHeader() {
   return <Header heading="Precios" text="Todos los precios de los tipos de etiquetas">
-    <Link className="underline" href={route("administracion.precios.create")}>+</Link>
+    <Link className={cn(buttonVariants(), "inline-flex items-center justify-center")} href={route("administracion.precios.create")}>
+      <PlusIcon className="absolute h-4" />
+    </Link>
   </Header >
 }
 
 export default function PreciosIndex({ auth, precios }: PageProps<{ precios: PrecioWithTipoEtiqueta[]; }>) {
+  console.log(precios);
   return (
     <AuthenticatedLayout
       user={auth.user}

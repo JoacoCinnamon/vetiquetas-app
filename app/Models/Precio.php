@@ -12,12 +12,7 @@ class Precio extends Model {
     // Vamos a manejar los fecha_desde y fecha_hasta a manopla
     public $timestamps = false;
 
-    /**
-    * The attributes that are mass assignable.
-    *
-    * @var array<int, string>
-    */
-    protected $fillable = ['medida','cantidad_colores','precio'];
+    protected $guarded = [];
 
     public static function getUltimoPrecio(
         int $tipo_etiqueta_id,
