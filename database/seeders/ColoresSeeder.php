@@ -10,7 +10,7 @@ class ColoresSeeder extends Seeder {
         for ($i = 0; $i < 15; $i++) {
             Color::create([
               'nombre' => fake('es_ES')->unique()->safeColorName(),
-              'hex' => fake('es_ES')->unique()->safeHexColor(),
+              'hex' => fake('es_ES')->unique()->hexColor(),
             ]);
         }
     }

@@ -5,7 +5,7 @@ use App\Http\Controllers\DisenioController;
 use App\Http\Controllers\PrecioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TipoEtiquetaController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\ColorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -42,6 +42,8 @@ Route::middleware(['role:admin', 'auth'])->prefix('administracion')->name('admin
 
     Route::post('/precios/aumentar', [PrecioController::class, 'aumentar'])->name('precios.aumentar');
     Route::resource('/precios', PrecioController::class);
+
+    Route::resource('/colores', ColorController::class)->except(['show', 'create', 'edit']);
 });
 
 require __DIR__ . '/auth.php';

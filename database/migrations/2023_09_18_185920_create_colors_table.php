@@ -13,7 +13,7 @@ return new class () extends Migration {
             $table->id();
             $table->string('nombre')->unique();
             // Sin el #
-            $table->char('hex', 6);
+            $table->char('hex', 6)->unique();
         });
     }
 

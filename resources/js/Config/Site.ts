@@ -67,6 +67,14 @@ export const vetiquetasConfig: VetiquetasConfig = {
         return route().current("administracion.precios.index");
       }
     },
+    {
+      title: "Colores",
+      href: route("administracion.colores.index"),
+      isPrivate: true,
+      isActive: () => {
+        return route().current("administracion.colores.index");
+      }
+    },
   ],
   sidebarNav: [
     {
@@ -99,6 +107,12 @@ export const vetiquetasConfig: VetiquetasConfig = {
         {
           title: "Precios",
           href: route("administracion.precios.index"),
+          isPrivate: true,
+          items: []
+        },
+        {
+          title: "Colores",
+          href: route("administracion.colores.index"),
           isPrivate: true,
           items: []
         },
