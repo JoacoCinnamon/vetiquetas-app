@@ -13,8 +13,18 @@ class ColorController extends Controller {
      */
     public function index() {
         $this->authorize('viewAny', Color::class);
+
+        $colores = Color::all()->map(function ($color) {
+            return [
+                ...$color->toArray(),
+                'can' => [
+                    'editAndDelete' => !$color->hasDiseños()
+                ]
+            ];
+        });
+
         return Inertia::render('Administracion/Colores', [
-            'colores' => Color::all(),
+            'colores' => $colores,
         ]);
     }
 
@@ -58,7 +68,7 @@ class ColorController extends Controller {
             $this->cleanHex($request);
             $validated = $request->validate([
                 'nombre' => ['required','string','max:255',Rule::unique('colores')->ignore($color)],
-                'hex' => ['required','string',Rule::unique('colores')->ignore($color), 'regex:/^#([A-Fa-f0-9]{6})$/']
+                'hex' => ['required','string',Rule::unique('colores')->ignore($color), 'regex:/^([A-Fa-f0-9]{6})$/']
             ]);
 
             $color->update($validated);

@@ -5,9 +5,11 @@ import { Color } from "@/types/models";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table";
 import { Header } from "@/Components/header";
 import { ModalAgregarColor } from "@/Components/colores/modal-agregar";
-import { Input } from "@/Components/ui/input";
+import { ColorOperaciones } from "@/Components/colores/acciones";
 
-export default function TipoEtiquetaIndex({ auth, colores }: PageProps<{ colores: Color[]; }>) {
+export type ColorYOperacion = Color & { can: { editAndDelete: boolean } };
+
+export default function ColoresIndex({ auth, colores }: PageProps<{ colores: ColorYOperacion[]; }>) {
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -28,7 +30,7 @@ export default function TipoEtiquetaIndex({ auth, colores }: PageProps<{ colores
 }
 
 
-function ColoresTable({ colores }: { colores: Color[] | [] | undefined }) {
+function ColoresTable({ colores }: { colores: ColorYOperacion[] | [] | undefined }) {
 
   if (!colores || colores.length === 0) {
     return (
@@ -43,23 +45,24 @@ function ColoresTable({ colores }: { colores: Color[] | [] | undefined }) {
       <TableHeader>
         <TableRow>
           <TableHead>Nombre</TableHead>
-          <TableHead>HEX</TableHead>
-          {/* <TableHead>{""}</TableHead> */}
+          <TableHead className="text-left">Color</TableHead>
+          <TableHead>{""}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {colores.map((color) => (
           <TableRow key={color.id}>
             <TableCell>{color.nombre}</TableCell>
-            <TableCell><div style={{
-              backgroundColor: color.hex,
-              width: "20px",
-              height: "20px",
-            }}
-            />
+            <TableCell className="text-left">
+              <div className="border" style={{
+                backgroundColor: color.hex,
+                width: "25px",
+                height: "25px",
+              }}
+              />
             </TableCell>
             <TableCell className="text-right">
-              {/* <ColorOperaciones color={color} /> */}
+              {color.can.editAndDelete && <ColorOperaciones color={color} />}
             </TableCell>
           </TableRow>
         ))}

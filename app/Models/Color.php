@@ -29,7 +29,11 @@ class Color extends Model {
     }
 
     // Verificar si tiene diseños relacionados
-    public function scopeHasDiseños(Builder $query) {
+    public function scopeWhereHasDiseños(Builder $query) {
         return $query->whereHas('diseños');
+    }
+
+    public function hasDiseños(): bool {
+        return $this->diseños()->count() > 0;
     }
 }
