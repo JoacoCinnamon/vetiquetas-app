@@ -13,7 +13,7 @@ export function TipoEtiquetaOperaciones({ tipoEtiqueta }: { tipoEtiqueta: TipoEt
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
 
-  const { data, patch, setData, delete: destroy, errors, reset, processing, setDefaults } =
+  const { data, patch, setData, delete: destroy, errors, processing } =
     useInertiaForm({ nombre: tipoEtiqueta.nombre ?? "" });
 
   return (

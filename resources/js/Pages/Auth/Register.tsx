@@ -127,6 +127,7 @@ export default function Register() {
                         <Label htmlFor="password">Contraseña</Label>
 
                         <Input
+                            type="password"
                             id="password"
                             name="password"
                             value={data.password}
@@ -144,6 +145,7 @@ export default function Register() {
                         <Label htmlFor="password_confirmation">Confirmar contraseña</Label>
 
                         <Input
+                            type="password"
                             id="password_confirmation"
                             name="password_confirmation"
                             value={data.password_confirmation}
