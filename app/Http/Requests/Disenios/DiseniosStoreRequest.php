@@ -16,7 +16,7 @@ class DiseniosStoreRequest extends FormRequest {
             'nombre' => ['required', 'string', 'max:255'],
             'tipo_etiqueta_id' => ['required', 'numeric', 'exists:tipo_etiquetas,id'],
             'color_fondo_id' => ['required', 'numeric', 'exists:colores,id'],
-            'colores' => ['required', 'array', 'min:1', 'max:7'],
+            'colores' => ['required', 'array', 'min:1', 'max:4'],
             'colores.*.id' => ['required', 'numeric', 'exists:colores,id'],
             'ancho' => ['required', 'numeric'],
             'largo' => ['required', 'numeric'],

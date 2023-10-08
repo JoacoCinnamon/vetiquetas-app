@@ -27,7 +27,7 @@ export type TipoEtiquetaWithPrecios = TipoEtiqueta & {
 }
 
 export const MEDIDAS = [12, 16, 20, 25, 33, 40, 50, 60] as const;
-export const CANTIDAD_COLORES = [1, 2, 3, 4, 5, 6, 7] as const;
+export const CANTIDAD_COLORES = [1, 2, 3, 4] as const;
 
 
 export type Diseño = {
