@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\CotizarController;
 use App\Http\Controllers\DisenioController;
-use App\Http\Controllers\PrecioController;
+use App\Http\Administracion\Controllers\PrecioController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TipoEtiquetaController;
-use App\Http\Controllers\ColorController;
+use App\Http\Administracion\Controllers\TipoEtiquetaController;
+use App\Http\Administracion\Controllers\ColorController;
+
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 

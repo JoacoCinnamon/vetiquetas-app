@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Administracion\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\TipoEtiqueta;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
