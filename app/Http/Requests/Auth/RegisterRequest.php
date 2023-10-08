@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest {
         return [
             'nombre' => ['required', 'string', 'max:255'],
             'apellido' => ['required', 'string', 'max:255'],
-            'documento' => ['required', 'string', 'numeric', 'digits_between:7,8'],
+            // 'documento' => ['required', 'string', 'numeric', 'digits_between:7,8'],
             'cuit_cuil' => ['required', 'string', new ValidCuitCuil(), 'unique:' . User::class],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Password::defaults()],

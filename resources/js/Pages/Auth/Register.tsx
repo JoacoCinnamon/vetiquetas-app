@@ -37,75 +37,57 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <fieldset disabled={processing} className="group">
-                    <div className="space-y-2">
-                        <Label htmlFor="nombre">Nombre</Label>
-
-                        <Input
-                            id="nombre"
-                            name="nombre"
-                            value={data.nombre}
-                            className="mt-1 block w-full"
-                            autoComplete="nombre"
-                            autoFocus={true}
-                            onChange={(e) => setData("nombre", e.target.value)}
-                            required
-                        />
-
-                        <LabelError message={errors.nombre} className="mt-2" />
-                    </div>
-
-                    <div className="space-y-2 mt-4">
-                        <Label htmlFor="apellido">Apellido</Label>
-
-                        <Input
-                            id="apellido"
-                            name="apellido"
-                            value={data.apellido}
-                            className="mt-1 block w-full"
-                            autoComplete="apellido"
-                            autoFocus={true}
-                            onChange={(e) => setData("apellido", e.target.value)}
-                            required
-                        />
-
-                        <LabelError message={errors.apellido} className="mt-2" />
-                    </div>
-
                     <section className="md:flex md:flex-auto md:justify-between md:gap-2">
                         <div className="space-y-2 mt-4 md:flex md:flex-col w-full">
-                            <Label htmlFor="documento">Documento</Label>
+                            <Label htmlFor="nombre">Nombre</Label>
 
                             <Input
-                                id="documento"
-                                name="documento"
-                                value={data.documento}
+                                id="nombre"
+                                name="nombre"
+                                value={data.nombre}
                                 className="mt-1 block w-full"
-                                autoComplete="documento"
+                                autoComplete="nombre"
                                 autoFocus={true}
-                                onChange={(e) => setData("documento", e.target.value)}
+                                onChange={(e) => setData("nombre", e.target.value)}
                                 required
                             />
 
-                            <LabelError message={errors.documento} className="mt-2" />
+                            <LabelError message={errors.nombre} className="mt-2" />
                         </div>
-
                         <div className="space-y-2 mt-4 md:flex md:flex-col w-full">
-                            <Label htmlFor="cuit_cuil">CUIT/CUIL</Label>
+                            <Label htmlFor="apellido">Apellido</Label>
 
                             <Input
-                                id="cuit_cuil"
-                                name="cuit_cuil"
-                                value={data.cuit_cuil}
+                                id="apellido"
+                                name="apellido"
+                                value={data.apellido}
                                 className="mt-1 block w-full"
-                                autoComplete="cuit_cuil"
+                                autoComplete="apellido"
                                 autoFocus={true}
-                                onChange={(e) => setData("cuit_cuil", e.target.value)}
+                                onChange={(e) => setData("apellido", e.target.value)}
                                 required
                             />
 
-                            <LabelError message={errors.cuit_cuil} className="mt-2" />
+                            <LabelError message={errors.apellido} className="mt-2" />
                         </div>
                     </section>
+
+                    <div className="space-y-2 mt-4">
+                        <Label htmlFor="cuit_cuil">CUIT/CUIL</Label>
+
+                        <Input
+                            id="cuit_cuil"
+                            name="cuit_cuil"
+                            value={data.cuit_cuil}
+                            className="mt-1 block w-full"
+                            autoComplete="cuit_cuil"
+                            autoFocus={true}
+                            onChange={(e) => setData("cuit_cuil", e.target.value)}
+                            required
+                        />
+
+                        <LabelError message={errors.cuit_cuil} className="mt-2" />
+                    </div>
 
                     <div className="space-y-2 mt-4">
                         <Label htmlFor="email">Correo electrónico</Label>

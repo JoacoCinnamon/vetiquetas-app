@@ -5,7 +5,6 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\Roles;
-use App\Enums\TipoDocumento;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,8 +28,8 @@ class User extends Authenticatable {
     protected $fillable = [
         'nombre',
         'apellido',
-        'documento',
-        'tipo_documento',
+        // 'documento',
+        // 'tipo_documento',
         'cuit_cuil',
         'email',
         'password',
@@ -52,7 +51,7 @@ class User extends Authenticatable {
      * @var array<string, string>
      */
     protected $casts = [
-        'tipo_documento' => TipoDocumento::class,
+        // 'tipo_documento' => TipoDocumento::class,
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];

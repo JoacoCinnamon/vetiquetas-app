@@ -18,8 +18,8 @@ class AdminSeeder extends Seeder {
             'nombre' => 'admin',
             'apellido' => 'administrador',
             'email' => 'admin@example.com',
-            'documento' => '50063946',
-            'tipo_documento' => 'dni',
+            // 'documento' => '50063946',
+            // 'tipo_documento' => 'dni',
             'cuit_cuil' => '34500639468',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
