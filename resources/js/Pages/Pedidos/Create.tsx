@@ -4,13 +4,13 @@ import { useForm as useInertiaForm } from '@inertiajs/react';
 import { PageProps } from "@/types";
 import { Header } from "@/Components/header";
 
-import { CANTIDAD_COLORES, Color, MEDIDAS, TipoEtiquetaWithPrecios } from "@/types/models";
-import { Button } from "@/Components/ui/button";
+import { CANTIDAD_COLORES, Color, Diseño, MEDIDAS, TipoEtiquetaWithPrecios } from "@/types/models";
+import { Button, buttonVariants } from "@/Components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/Components/ui/card";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/Components/ui/select";
-
+import { formatPrecio } from "@/utils/currencies";
 import { Label, LabelError } from "@/Components/ui/label";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useState } from "react";
 import { Input } from "@/Components/ui/input";
 import { Spinner } from "@/Components/spinner";
 
@@ -67,7 +67,7 @@ export default function DiseñosCreate({
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
-    const { ancho } = data;
+    const { tipo_etiqueta_id, color_fondo_id, colores, ancho, largo, foto } = data;
     const precio = filteredPrecios.find(p => (p.medida === ancho && p.cantidad_colores === data.colores.length));
     if (!precio) return;
     post(route("disenios.store"))
@@ -273,7 +273,7 @@ export default function DiseñosCreate({
                     <Label htmlFor="foto">
                       Suba una foto de su diseño
                     </Label>
-                    <Input id="foto" name="foto" type="file" accept=".png, .jpg, .jpeg" className="file:text-foreground" required
+                    <Input id="foto" type="file" accept=".png, .jpg, .jpeg" className="file:text-foreground" required
                       onChange={(e) => {
                         const target = e.target as HTMLInputElement & { files: FileList };
                         setData("foto", target.files[0])

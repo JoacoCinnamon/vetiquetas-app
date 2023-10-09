@@ -70,6 +70,10 @@ class User extends Authenticatable {
         return $this->hasRole(Roles::Administrador->value);
     }
 
+    public function pedidos(): HasMany {
+        return $this->hasMany(Pedido::class);
+    }
+
     public function diseños(): HasMany {
         return $this->hasMany(Disenio::class);
     }

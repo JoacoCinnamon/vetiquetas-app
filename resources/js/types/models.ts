@@ -33,7 +33,8 @@ export const CANTIDAD_COLORES = [1, 2, 3, 4] as const;
 export type Diseño = {
   id: number;
   user_id: number;
-  tipo_etiqueta_id: Pick<TipoEtiqueta, "id">
+  color_fondo_id: number;
+  tipo_etiqueta_id: number;
   nombre: string;
   colores: { id: number, nombre: string, hex: `#${string}` }[];
   ancho: typeof MEDIDAS[number];
@@ -41,11 +42,43 @@ export type Diseño = {
   foto_path: string;
   creado_el: string
   actualizado_el: string;
-  // Colores
 }
 
 export type Color = {
   id: number;
   nombre: string;
   hex: string
+}
+
+export enum PedidoEstado {
+  Pedido = 1,
+  Procesado = 2,
+  Entregado = 3,
+  Cancelado = 4,
+}
+
+export enum TipoEntrega {
+  Rollo = 1,
+  RolloApresto = 2,
+  Cortada = 3,
+  CortadaApresto = 4,
+  CortadaDobladaMedio = 5,
+  CortadaDobladaPuntas = 6,
+}
+
+export type Pedido = {
+  id: number;
+  user_id: number;
+  diseño_id: Pick<Diseño, "id">;
+  descripcion: string;
+  precio: number;
+  cantidad: number;
+
+  estado: PedidoEstado;
+  tipo_entrega: TipoEntrega;
+
+  fecha_pedido: string;
+  fecha_prevista: string;
+  fecha_entrega: string | null;
+  deleted_at: string | null;
 }

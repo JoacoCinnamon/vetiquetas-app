@@ -33,13 +33,15 @@ class DisenioPolicy {
      * Determine whether the user can update the model.
      */
     public function update(User $user, Disenio $disenio): bool {
-        return $user->hasPermissionTo(Permisos::ActualizarDiseños->value) && $disenio->user->id === $user->id;
+        return $user->isAdmin() ||
+        ($user->hasPermissionTo(Permisos::ActualizarDiseños->value) && !$disenio->hasPedidos() && $disenio->user->id === $user->id);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Disenio $disenio): bool {
-        return $user->hasPermissionTo(Permisos::BorrarDiseños->value) && $disenio->user->id === $user->id;
+        return $user->isAdmin() ||
+        ($user->hasPermissionTo(Permisos::ActualizarDiseños->value) && !$disenio->hasPedidos() && $disenio->user->id === $user->id);
     }
 }

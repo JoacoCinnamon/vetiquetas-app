@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Administracion\Controllers;
+namespace App\Http\Controllers\Administracion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Color;
@@ -15,7 +15,7 @@ class ColorController extends Controller {
     public function index() {
         $this->authorize('viewAny', Color::class);
 
-        $colores = Color::all()->map(function ($color) {
+        $colores = Color::all()->map(function (Color $color) {
             return [
                 ...$color->toArray(),
                 'can' => [

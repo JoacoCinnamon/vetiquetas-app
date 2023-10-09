@@ -18,6 +18,11 @@ enum Permisos: string {
     case ActualizarDiseños = 'actualizar diseños';
     case BorrarDiseños = 'borrar diseños';
 
+    case VerPedidos = 'ver pedidos';
+    case VerTodosLosPedidos = 'ver todos los pedidos';
+    case CrearPedidos = 'crear pedidos';
+    case BorrarPedidos = 'borrar pedidos';
+
     /**
      * Return the value of the enum
      */

@@ -29,6 +29,9 @@ class RolesAndPermissionsSeeder extends Seeder {
             Permisos::CrearDiseños->value,
             Permisos::ActualizarDiseños->value,
             Permisos::BorrarDiseños->value,
+            Permisos::VerPedidos->value,
+            Permisos::CrearPedidos->value,
+            Permisos::BorrarPedidos->value,
         ]);
     }
 }

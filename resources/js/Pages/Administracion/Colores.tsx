@@ -62,7 +62,7 @@ function ColoresTable({ colores }: { colores: ColorYOperacion[] | [] | undefined
               />
             </TableCell>
             <TableCell className="text-right">
-              {color.can.editAndDelete && <ColorOperaciones color={color} />}
+              {color.can.editAndDelete && <ColorOperaciones color={color} key={color.id} />}
             </TableCell>
           </TableRow>
         ))}

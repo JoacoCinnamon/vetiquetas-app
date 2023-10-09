@@ -5,9 +5,11 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\Color;
+use App\Models\Pedido;
 use App\Models\Precio;
 use App\Models\TipoEtiqueta;
 use App\Policies\ColorPolicy;
+use App\Policies\PedidoPolicy;
 use App\Policies\PrecioPolicy;
 use App\Policies\TipoEtiquetaPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -22,6 +24,7 @@ class AuthServiceProvider extends ServiceProvider {
         TipoEtiqueta::class => TipoEtiquetaPolicy::class,
         Precio::class => PrecioPolicy::class,
         Color::class => ColorPolicy::class,
+        Pedido::class => PedidoPolicy::class
     ];
 
     /**

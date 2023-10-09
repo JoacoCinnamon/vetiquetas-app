@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Administracion\Controllers;
+namespace App\Http\Controllers\Administracion;
 
 use App\Http\Controllers\Controller;
 use App\Models\TipoEtiqueta;

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Disenio extends Model {
     use HasFactory;
@@ -17,6 +18,9 @@ class Disenio extends Model {
 
     protected $guarded = [];
 
+    public function hasPedidos(): bool {
+        return $this->pedidos()->count() > 0;
+    }
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
@@ -24,6 +28,10 @@ class Disenio extends Model {
 
     public function tipoEtiqueta(): BelongsTo {
         return $this->belongsTo(TipoEtiqueta::class);
+    }
+
+    public function pedidos(): HasMany {
+        return $this->hasMany(Pedido::class);
     }
 
     public function colores(): BelongsToMany {
