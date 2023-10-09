@@ -5,7 +5,7 @@ namespace App\Http\Requests\Disenios;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\File;
 
-class DiseniosStoreRequest extends FormRequest {
+class DiseniosUpdateRequest extends FormRequest {
     /**
      * Get the validation rules that apply to the request.
      *
@@ -20,7 +20,7 @@ class DiseniosStoreRequest extends FormRequest {
             'colores.*.id' => ['required', 'numeric', 'exists:colores,id'],
             'ancho' => ['required', 'numeric', 'min:12', 'max:60'],
             'largo' => ['required', 'numeric', 'min:2', 'max:300'],
-            'foto' => ['required', File::image()->max('3mb')]
+            'foto' => ['nullable', File::image()->max('3mb')]
         ];
     }
 

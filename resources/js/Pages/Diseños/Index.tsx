@@ -5,19 +5,41 @@ import { Header } from "@/Components/header";
 
 import {
   Table,
-  TableBody,
   TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@/Components/ui/table"
 import { Diseño } from "@/types/models";
 import { Button } from "@/Components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
+import { DiseñosOperaciones } from "@/Components/diseños/acciones";
 
-function DiseñosTable({ diseños }: { diseños: Diseño[] | [] | undefined }) {
+export type DiseñoYOperacion = Diseño & { can: { editAndDelete: boolean } };
+
+export default function DiseñosIndex({ auth, diseños }: PageProps<{ diseños: DiseñoYOperacion[] | [] | undefined; }>) {
+
+  return (
+    <AuthenticatedLayout
+      user={auth.user}
+      header={<DiseñosHeader />}
+    >
+      <Head title="Diseños" />
+
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 p-6">
+          <DiseñosTable diseños={diseños} />
+        </div>
+      </div>
+    </AuthenticatedLayout>
+  );
+}
+
+function DiseñosHeader() {
+  return <Header heading="Diseños" text="Todos tus diseños">
+    <Link href={route("disenios.create")} className="inline-flex items-center justify-center"><PlusIcon className="absolute h-4" /></Link>
+  </Header >
+}
+
+function DiseñosTable({ diseños }: { diseños: DiseñoYOperacion[] | [] | undefined }) {
   if (!diseños || diseños.length === 0) {
     return (
       <Table>
@@ -36,6 +58,7 @@ function DiseñosTable({ diseños }: { diseños: Diseño[] | [] | undefined }) {
               <CardDescription>
                 {diseño.ancho} x {diseño.largo}
               </CardDescription>
+              {diseño.can.editAndDelete && <DiseñosOperaciones diseño={diseño} key={diseño.id} />}
             </CardHeader>
             <CardContent className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md  lg:aspect-none group-hover:opacity-75 lg:h-80">
               <div className="grid w-full items-center gap-4">
@@ -57,27 +80,4 @@ function DiseñosTable({ diseños }: { diseños: Diseño[] | [] | undefined }) {
       </div>
     </div>
   )
-}
-function DiseñosHeader() {
-  return <Header heading="Diseños" text="Todos tus diseños">
-    <Link href={route("disenios.create")} className="inline-flex items-center justify-center"><PlusIcon className="absolute h-4" /></Link>
-  </Header >
-}
-
-export default function DiseñosIndex({ auth, diseños }: PageProps<{ diseños: Diseño[] | undefined; }>) {
-
-  return (
-    <AuthenticatedLayout
-      user={auth.user}
-      header={<DiseñosHeader />}
-    >
-      <Head title="Diseños" />
-
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 p-6">
-          <DiseñosTable diseños={diseños} />
-        </div>
-      </div>
-    </AuthenticatedLayout>
-  );
 }

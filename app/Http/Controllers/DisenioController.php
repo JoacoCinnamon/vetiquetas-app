@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Disenios\DiseniosStoreRequest;
+use App\Http\Requests\Disenios\DiseniosUpdateRequest;
 use App\Models\Color;
 use App\Models\Disenio;
 use App\Models\TipoEtiqueta;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class DisenioController extends Controller {
@@ -16,8 +19,17 @@ class DisenioController extends Controller {
     public function index() {
         $this->authorize('viewAny', Disenio::class);
 
+        $disenios = Disenio::all()?->load('colores', 'tipoEtiqueta')->map(function (Disenio $disenio) {
+            return [
+                ...$disenio->toArray(),
+                'can' => [
+                    'editAndDelete' => !$disenio->hasPedidos()
+                ]
+            ];
+        });
+
         return Inertia::render('Diseños/Index', [
-            'diseños' => fn () => Disenio::all()?->load('colores', 'tipoEtiqueta')->toArray(),
+            'diseños' => fn () => $disenios,
         ]);
     }
 
@@ -71,21 +83,74 @@ class DisenioController extends Controller {
      */
     public function edit(Disenio $disenio) {
         $this->authorize('update', $disenio);
+
+        return Inertia::render('Diseños/Edit', [
+            'tipoEtiquetas' => fn () => TipoEtiqueta::ultimosPrecios()->toArray(),
+            'colores' => fn () => Color::all()->toArray(),
+            'diseño' => fn () => $disenio->load('colores')->toArray(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Disenio $disenio) {
+    public function update(DiseniosUpdateRequest $request, Disenio $disenio) {
         $this->authorize('update', $disenio);
-        // TODO: SOLO SI NO TIENE PEDIDOS
+
+        DB::beginTransaction();
+        try {
+            if ($request->hasFile('foto')) {
+                // Toda esta triquiñuela para que nos quede solo el /diseños/*.png
+                $fotoAnteriorPath = str_replace('/storage', '', parse_url($disenio->foto_path, PHP_URL_PATH));
+                $foto_path = $request->file('foto')->store('diseños', 'public');
+
+                // Actualiza el campo de la foto con la nueva ruta
+                $disenio->foto_path = asset('storage/' . $foto_path);
+
+                if (Storage::disk('public')->exists($fotoAnteriorPath)) {
+                    Storage::disk('public')->delete($fotoAnteriorPath);
+                }
+            }
+
+            $disenio->nombre = $request->validated('nombre');
+            $disenio->tipo_etiqueta_id = $request->validated('tipo_etiqueta_id');
+            $disenio->color_fondo_id = $request->validated('color_fondo_id');
+            $disenio->ancho = $request->validated('ancho');
+            $disenio->largo = $request->validated('largo');
+
+            // Actualiza los colores asociados al diseño
+            $nuevosIdColores = array_map(fn ($color) => $color['id'], $request->validated('colores'));
+            $disenio->colores()->sync($nuevosIdColores);
+
+            $disenio->save();
+
+            DB::commit();
+
+            return to_route('disenios.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::log('info', $e->getMessage());
+            return response('Anda como el tuje la edicion del diseño, todavía no se puede.', 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Disenio $disenio) {
         $this->authorize('delete', $disenio);
-        // TODO: SOLO SI NO TIENE PEDIDOS
+
+        $disenio->colores()->detach();
+
+        $fotoAnteriorPath = str_replace('/storage', '', parse_url($disenio->foto_path, PHP_URL_PATH));
+
+        if (Storage::disk('public')->exists($fotoAnteriorPath)) {
+            Storage::disk('public')->delete($fotoAnteriorPath);
+        }
+
+        $disenio->delete();
+
+        return redirect()->route('disenios.index');
     }
 }
