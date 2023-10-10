@@ -9,7 +9,7 @@ import { LabelError } from "../ui/label";
 
 export function ModalAgregarColor() {
   const [open, setOpen] = useState(false);
-  const { errors, post, processing, setData, reset } = useInertiaForm({ nombre: "", hex: "" });
+  const { data, errors, post, processing, setData, reset } = useInertiaForm({ nombre: "", codigo: "", hex: "#EA4A4A" });
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -39,13 +39,20 @@ export function ModalAgregarColor() {
           <fieldset disabled={processing} className="group">
             <div className="grid gap-4 py-4">
               <div className="items-center gap-4 space-y-2">
-                <Input placeholder="Rojo" onChange={(e) => {
+                <Input value={data.nombre} placeholder="Rojo" onChange={(e) => {
                   setData("nombre", e.target.value);
                 }} />
                 <LabelError message={errors.nombre} />
               </div>
               <div className="items-center gap-4 space-y-2">
-                <Input type="color" placeholder="Rojo" defaultValue="#EA4A4A" onChange={(e) => {
+                <Input type="number" min="1" max="1000" value={data.codigo} placeholder="Código"
+                  onChange={(e) => {
+                    setData("codigo", e.target.value);
+                  }} />
+                <LabelError message={errors.codigo} />
+              </div>
+              <div className="items-center gap-4 space-y-2">
+                <Input type="color" value={data.hex} placeholder="Rojo" onChange={(e) => {
                   setData("hex", e.target.value);
                 }} />
                 <LabelError message={errors.hex} />

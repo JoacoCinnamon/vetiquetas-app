@@ -46,6 +46,7 @@ function ColoresTable({ colores }: { colores: ColorYOperacion[] | [] | undefined
         <TableRow>
           <TableHead>Nombre</TableHead>
           <TableHead className="text-left">Color</TableHead>
+          <TableHead>Código</TableHead>
           <TableHead>{""}</TableHead>
         </TableRow>
       </TableHeader>
@@ -61,6 +62,7 @@ function ColoresTable({ colores }: { colores: ColorYOperacion[] | [] | undefined
               }}
               />
             </TableCell>
+            <TableCell>{color.codigo}</TableCell>
             <TableCell className="text-right">
               {color.can.editAndDelete && <ColorOperaciones color={color} key={color.id} />}
             </TableCell>

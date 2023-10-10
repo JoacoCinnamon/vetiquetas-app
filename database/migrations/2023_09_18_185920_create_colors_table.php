@@ -11,7 +11,8 @@ return new class () extends Migration {
     public function up(): void {
         Schema::create('colores', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
+            $table->string('nombre', 255)->unique();
+            $table->unsignedBigInteger('codigo')->unique();
             // Sin el #
             $table->char('hex', 6)->unique();
         });

@@ -15,7 +15,7 @@ export function ColorOperaciones({ color }: { color: Color }) {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
 
   const { data, patch, setData, delete: destroy, errors, processing } =
-    useInertiaForm({ nombre: color.nombre ?? "", hex: color.hex ?? "#EA4A4A" });
+    useInertiaForm({ id: color.id, nombre: color.nombre ?? "", codigo: color.codigo.toString() ?? "", hex: color.hex ?? "#EA4A4A" });
 
   return (
     <>
@@ -51,18 +51,16 @@ export function ColorOperaciones({ color }: { color: Color }) {
           </Modal.Header>
           <form onSubmit={(e) => {
             e.preventDefault()
-            console.log(color);
-            patch(route("administracion.colores.update", { id: color.id }),
-              {
-                onSuccess: () => {
-                  setShowEditModal(false);
-                },
-                only: ["colores"]
-              },
+            patch(route("administracion.colores.update", { id: color.id }), {
+              onSuccess: () => {
+                setShowEditModal(false);
+              }
+            },
             )
           }}>
             <fieldset disabled={processing} className="group">
               <div className="grid gap-4 py-4">
+                <input type="hidden" name="id" value={color.id} />
                 <div className="items-center gap-4 space-y-2">
                   <Input value={data.nombre} placeholder="Rojo" onChange={(e) => {
                     setData("nombre", e.target.value);
@@ -70,7 +68,15 @@ export function ColorOperaciones({ color }: { color: Color }) {
                   <LabelError message={errors.nombre} />
                 </div>
                 <div className="items-center gap-4 space-y-2">
+                  <Input type="number" min="1" max="1000" value={data.codigo} placeholder="440"
+                    onChange={(e) => {
+                      setData("codigo", e.target.value);
+                    }} />
+                  <LabelError message={errors.codigo} />
+                </div>
+                <div className="items-center gap-4 space-y-2">
                   <Input value={data.hex} type="color" placeholder="Rojo" onChange={(e) => {
+                    console.log(e.target.value)
                     setData("hex", e.target.value);
                   }} />
                   <LabelError message={errors.hex} />
