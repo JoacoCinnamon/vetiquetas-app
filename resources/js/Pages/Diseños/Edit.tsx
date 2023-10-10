@@ -170,7 +170,12 @@ export default function DiseñosCreate({
                             <SelectLabel>Colores</SelectLabel>
                             {colores?.map((color) => {
                               return <SelectItem key={color.id} value={color.id.toString()}>
-                                {color.nombre}
+                                <div className="border" style={{
+                                  backgroundColor: color.hex,
+                                  width: "100px",
+                                  height: "25px",
+                                }}
+                                />
                               </SelectItem>
                             })}
                           </SelectGroup>
@@ -210,7 +215,12 @@ export default function DiseñosCreate({
                                 <SelectLabel>Colores</SelectLabel>
                                 {colores?.map((color) => (
                                   <SelectItem key={color.id} value={color.id.toString()}>
-                                    {color.nombre}
+                                    <div className="border" style={{
+                                      backgroundColor: color.hex,
+                                      width: "100px",
+                                      height: "25px",
+                                    }}
+                                    />
                                   </SelectItem>
                                 ))}
                               </SelectGroup>

@@ -29,7 +29,7 @@ export const cotizacionFormSchema = z.object({
     .min(MEDIDAS[0], { message: "Ingrese el ancho." })
     .max(MEDIDAS[MEDIDAS.length - 1], { message: "Ingrese el ancho." }),
   largo: z.coerce.number({ invalid_type_error: "Ingrese un número.", required_error: "Ingrese el largo." })
-    .min(2, { message: "El mínimo de largo son 2mm.", })
+    .min(40, { message: "El mínimo de largo son 2mm.", })
     .max(300, { message: "El máximo de largo son 300mm." }),
   tipoEntrega: z.enum(TIPO_ENTREGA_VALUES, {
     required_error: "Elija un tipo de entrega.",

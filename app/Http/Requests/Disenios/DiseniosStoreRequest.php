@@ -16,10 +16,10 @@ class DiseniosStoreRequest extends FormRequest {
             'nombre' => ['required', 'string', 'max:255'],
             'tipo_etiqueta_id' => ['required', 'numeric', 'exists:tipo_etiquetas,id'],
             'color_fondo_id' => ['required', 'numeric', 'exists:colores,id'],
-            'colores' => ['required', 'array', 'min:1', 'max:4'],
+            'colores' => ['required', 'array', 'min:1', 'max:3'],
             'colores.*.id' => ['required', 'numeric', 'exists:colores,id'],
             'ancho' => ['required', 'numeric', 'min:12', 'max:60'],
-            'largo' => ['required', 'numeric', 'min:2', 'max:300'],
+            'largo' => ['required', 'numeric', 'min:40', 'max:300'],
             'foto' => ['required', File::image()->max('3mb')]
         ];
     }

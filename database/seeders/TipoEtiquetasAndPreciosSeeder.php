@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 
 class TipoEtiquetasAndPreciosSeeder extends Seeder {
     private static $MEDIDAS = [12, 16, 20, 25, 33, 40, 50, 60];
-    private static $CANTIDAD_COLORES = [1, 2, 3, 4];
+    private static $CANTIDAD_COLORES = [1, 2, 3];
 
 
     // php artisan db:seed --class=Database\Seeders\TipoEtiquetasAndPreciosSeeder
