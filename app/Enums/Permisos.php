@@ -21,6 +21,7 @@ enum Permisos: string {
     case VerPedidos = 'ver pedidos';
     case VerTodosLosPedidos = 'ver todos los pedidos';
     case CrearPedidos = 'crear pedidos';
+    case ActualizarPedidos = 'actualizar pedidos';
     case BorrarPedidos = 'borrar pedidos';
 
     /**

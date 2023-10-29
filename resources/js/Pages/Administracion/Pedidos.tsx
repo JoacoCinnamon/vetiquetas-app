@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/DefaultLayout";
 import { Head, Link } from "@inertiajs/react";
-import { PageProps } from "@/types";
+import { PageProps, User } from "@/types";
 import { Header } from "@/Components/header";
 
 import {
@@ -12,64 +12,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/Components/ui/table"
-import { Pedido, getPedidoEstado, getTipoEntrega } from "@/types/models";
+import { Pedido, PedidoEstado, getPedidoEstado, getTipoEntrega } from "@/types/models";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/Components/ui/button";
 import { formatPrecio } from "@/utils/currencies";
 import formatDate from "@/utils/date";
 import { Badge } from "@/Components/ui/badge";
+import { PedidoOperaciones } from "@/Components/pedidos/acciones";
 
-function PedidosTable({ pedidos }: { pedidos: Pedido[] | [] | undefined }) {
-  if (!pedidos || pedidos.length === 0) {
-    return (
-      <Table>
-        <TableCaption>No cargó ningún pedido aún.</TableCaption>
-      </Table>
-    )
-  }
-  console.log(pedidos)
-  return (
-    <Table>
-      <TableCaption>Pedidos.</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Descripción</TableHead>
-          <TableHead className="w-[100px]">Diseño</TableHead>
-          <TableHead>Precio total</TableHead>
-          <TableHead>Cantidad</TableHead>
-          <TableHead>Estado</TableHead>
-          <TableHead>Tipo de entrega</TableHead>
-          <TableHead>Fecha pedida</TableHead>
-          <TableHead>Fecha entregada</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {pedidos.map((pedido) => (
-          <TableRow key={pedido.id}>
-            <TableCell>{pedido.descripcion}</TableCell>
-            <TableCell>{pedido.diseño.nombre}</TableCell>
-            <TableCell>{formatPrecio(pedido.precio)}</TableCell>
-            <TableCell>{pedido.cantidad}</TableCell>
-            <TableCell className="uppercase"><Badge>{getPedidoEstado(pedido.estado).label}</Badge></TableCell>
-            <TableCell>{getTipoEntrega(pedido.tipo_entrega).label}</TableCell>
-            <TableCell>{formatDate(pedido.fecha_pedido)}</TableCell>
-            <TableCell>{pedido.fecha_entrega ? formatDate(pedido.fecha_entrega) : "No se entregó"}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table >
-  )
-}
-function PedidosHeader() {
-  return <Header heading="Pedidos" text="Todos tus pedidos">
-    <Link href={route("pedidos.create")} className={cn(buttonVariants(), "inline-flex items-center justify-center")}>
-      <PlusIcon className="absolute h-4" />
-    </Link>
-  </Header >
-}
 
-export default function PedidosIndex({ auth, pedidos }: PageProps<{ pedidos: Pedido[] | undefined; }>) {
+type PedidoWithUser = Pedido & { user: Pick<User, "id" | "nombre" | "apellido"> };
+
+export default function PedidosIndex({ auth, pedidos }: PageProps<{ pedidos: PedidoWithUser[] | undefined; }>) {
 
   return (
     <AuthenticatedLayout
@@ -85,4 +40,67 @@ export default function PedidosIndex({ auth, pedidos }: PageProps<{ pedidos: Ped
       </div>
     </AuthenticatedLayout>
   );
+}
+
+
+function PedidosTable({ pedidos }: { pedidos: PedidoWithUser[] | [] | undefined }) {
+  if (!pedidos || pedidos.length === 0) {
+    return (
+      <Table>
+        <TableCaption>No cargó ningún pedido aún.</TableCaption>
+      </Table>
+    )
+  }
+
+  return (
+    <Table>
+      <TableCaption>Pedidos de etiquetas.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Usuario</TableHead>
+          <TableHead>Descripción</TableHead>
+          <TableHead className="w-[100px]">Diseño</TableHead>
+          <TableHead>Precio total</TableHead>
+          <TableHead>Cantidad</TableHead>
+          <TableHead>Estado</TableHead>
+          <TableHead>Tipo de entrega</TableHead>
+          <TableHead>Fecha pedida</TableHead>
+          <TableHead>Fecha entregada</TableHead>
+          <TableHead>{""}</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {pedidos.map((pedido) => (
+          <TableRow key={pedido.id}>
+            <TableCell>{pedido.user.nombre} {pedido.user.apellido}</TableCell>
+            <TableCell>{pedido.descripcion}</TableCell>
+            <TableCell>{pedido.diseño.nombre}</TableCell>
+            <TableCell>{formatPrecio(pedido.precio)}</TableCell>
+            <TableCell>{pedido.cantidad}</TableCell>
+            <TableCell className="uppercase">
+              <Badge variant={pedido.estado === PedidoEstado.Cancelado ? "destructive" : "default"}>
+                {getPedidoEstado(pedido.estado).label}
+              </Badge>
+            </TableCell>
+            <TableCell>{getTipoEntrega(pedido.tipo_entrega).label}</TableCell>
+            <TableCell>{formatDate(pedido.fecha_pedido)}</TableCell>
+            <TableCell>{pedido.fecha_entrega ? formatDate(pedido.fecha_entrega) : "No se entregó"}</TableCell>
+            <TableCell className="text-right">
+              {
+                (pedido.estado === PedidoEstado.Pedido || pedido.estado === PedidoEstado.Procesado)
+                && <PedidoOperaciones pedido={pedido} />
+              }
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  )
+}
+function PedidosHeader() {
+  return <Header heading="Pedidos" text="Todos tus pedidos">
+    <Link href={route("pedidos.create")} className={cn(buttonVariants(), "inline-flex items-center justify-center")}>
+      <PlusIcon className="absolute h-4" />
+    </Link>
+  </Header>
 }

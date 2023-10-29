@@ -1,4 +1,4 @@
-import { CANTIDAD_COLORES, MEDIDAS } from "@/types/models";
+import { CANTIDAD_COLORES, MEDIDAS, TipoEntrega as TipoEntregaEnum } from "@/types/models";
 import { z } from "zod";
 
 export const TIPO_ENTREGA_VALUES = [
@@ -10,13 +10,13 @@ export const TIPO_ENTREGA_VALUES = [
   "cortada_doblada_puntas",
 ] as const;
 export type TipoEntrega = typeof TIPO_ENTREGA_VALUES[number];
-export const tipoEntregaForm: Record<TipoEntrega, { incrementa: number, label: string }> = {
-  rollo: { incrementa: 1, label: "En rollo" },
-  rollo_apresto: { incrementa: 1.10, label: "En rollo + apresto (+10%)" },
-  cortada: { incrementa: 1.15, label: "Cortada (+15%)" },
-  cortada_apresto: { incrementa: 1.2, label: "Cortada + apresto (+20%)" },
-  cortada_doblada_medio: { incrementa: 1.25, label: "Cortada y doblada al medio (+25%)" },
-  cortada_doblada_puntas: { incrementa: 1.25, label: "Cortada y doblada en las puntas (+25%)" },
+export const tipoEntregaForm: Record<TipoEntrega, { incrementa: number, label: string, value: string }> = {
+  rollo: { incrementa: 1, label: "En rollo", value: TipoEntregaEnum.Rollo },
+  rollo_apresto: { incrementa: 1.10, label: "En rollo + apresto (+10%)", value: TipoEntregaEnum.RolloApresto },
+  cortada: { incrementa: 1.15, label: "Cortada (+15%)", value: TipoEntregaEnum.Cortada },
+  cortada_apresto: { incrementa: 1.2, label: "Cortada + apresto (+20%)", value: TipoEntregaEnum.CortadaApresto },
+  cortada_doblada_medio: { incrementa: 1.25, label: "Cortada y doblada al medio (+25%)", value: TipoEntregaEnum.CortadaDobladaMedio },
+  cortada_doblada_puntas: { incrementa: 1.25, label: "Cortada y doblada en las puntas (+25%)", value: TipoEntregaEnum.CortadaDobladaPuntas },
 } as const
 
 export const cotizacionFormSchema = z.object({

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Pedidos\Requests;
+namespace App\Http\Requests\Pedidos;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -19,7 +19,7 @@ class UpdatePedidoRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            //
+            'estado' => ['required']
         ];
     }
 }

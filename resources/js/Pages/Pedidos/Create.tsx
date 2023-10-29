@@ -1,50 +1,48 @@
 import AuthenticatedLayout from "@/Layouts/DefaultLayout";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import { useForm as useInertiaForm } from '@inertiajs/react';
 import { PageProps } from "@/types";
 import { Header } from "@/Components/header";
 
-import { CANTIDAD_COLORES, Color, Diseño, MEDIDAS, TipoEtiquetaWithPrecios } from "@/types/models";
-import { Button, buttonVariants } from "@/Components/ui/button";
+import { Diseño, Precio, TipoEntrega } from "@/types/models";
+import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/Components/ui/card";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/Components/ui/select";
-import { formatPrecio } from "@/utils/currencies";
 import { Label, LabelError } from "@/Components/ui/label";
-import { FormEventHandler, useState } from "react";
-import { Input } from "@/Components/ui/input";
+import { FormEventHandler } from "react";
 import { Spinner } from "@/Components/spinner";
+import { Textarea } from "@/Components/ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "@/Components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { Calendar } from "@/Components/ui/calendar";
+import { addDays, format } from "date-fns";
+import { es } from "date-fns/locale";
+import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group";
+import { tipoEntregaForm } from "@/lib/validations/cotizacion";
+import { Input } from "@/Components/ui/input";
 
-
-export default function DiseñosCreate({
+export default function PedidosCreate({
   auth,
-  tipoEtiquetas,
-  colores
-}: PageProps<{ tipoEtiquetas: TipoEtiquetaWithPrecios[], colores: Color[] }>) {
-  const { errors, post, processing, setData, data, reset } = useInertiaForm<{
-    nombre: string,
-    tipo_etiqueta_id: number,
-    color_fondo_id: number,
-    ancho: number,
-    largo: number,
-    foto: File | null
-    colores: { id: number }[]
-  }>
-    ({
-      nombre: "",
-      tipo_etiqueta_id: -1,
-      color_fondo_id: -1,
-      ancho: -1,
-      largo: 0,
-      foto: null,
-      colores: [{ id: -1 }]
+  precios,
+  diseños
+}: PageProps<{ precios: Precio[], diseños: Diseño[] }>) {
+  const { errors, post, processing, setData, data, reset } =
+    useInertiaForm<{
+      descripcion: string;
+      disenio_id: string;
+      fecha_prevista: Date | undefined;
+      tipo_entrega: string;
+      cantidad: number;
+    }>({
+      descripcion: "",
+      disenio_id: "",
+      fecha_prevista: undefined,
+      tipo_entrega: TipoEntrega.Rollo,
+      cantidad: 1500,
     });
 
-  const filteredTipoEtiquetas = tipoEtiquetas
-    ?.filter(tipoEtiqueta => tipoEtiqueta.precios?.length === MEDIDAS.length * CANTIDAD_COLORES.length)
-  const selectedTipoEtiqueta = filteredTipoEtiquetas.find(tipoEtiqueta => tipoEtiqueta.id === data.tipo_etiqueta_id);
-  const filteredPrecios = selectedTipoEtiqueta?.precios || [];
-
-  if (filteredTipoEtiquetas.length === 0) {
+  if (diseños?.length === 0 || !diseños) {
     return <AuthenticatedLayout user={auth.user}>
       <section className="h-auto preview flex min-h-[350px] w-full justify-center p-10 items-center">
         Aún faltan precios por cargar para los tipos de etiquetas...
@@ -52,34 +50,26 @@ export default function DiseñosCreate({
     </AuthenticatedLayout>
   }
 
-  // Función para agregar un nuevo color
-  const addColor = () => {
-    if (data.colores.length < CANTIDAD_COLORES.length) {
-      setData("colores", [...data.colores, { id: -1 }]);
-    }
-  };
-  // Función para eliminar un color
-  const removeColor = (index: number) => {
-    const updatedColors = [...data.colores];
-    updatedColors.splice(index, 1);
-    setData("colores", updatedColors);
-  };
+  const selectedDiseño = diseños.find(d => d.id.toString() === data.disenio_id);
+  const precio = precios.find(p => (p.medida === selectedDiseño?.ancho && p.cantidad_colores === selectedDiseño?.colores.length));
 
   const onSubmit: FormEventHandler = (e) => {
     e.preventDefault();
-    const { tipo_etiqueta_id, color_fondo_id, colores, ancho, largo, foto } = data;
-    const precio = filteredPrecios.find(p => (p.medida === ancho && p.cantidad_colores === data.colores.length));
-    if (!precio) return;
-    post(route("disenios.store"))
+
+    if (!precio || !selectedDiseño) return;
+
+    // HACER CALCULOS DE LA COTIZADORA Y MOSTRARLO
+
+    post(route("pedidos.store"))
   }
 
   return (
     <>
       <AuthenticatedLayout
         user={auth.user}
-        header={<Header heading="Diseños" text="Cree un nuevo diseño." />}
+        header={<Header heading="Pedidos" text="Haga un pedido." />}
       >
-        <Head title="Diseños" />
+        <Head title="Pedidos" />
         <section className="h-auto preview flex min-h-[350px] w-full justify-center p-6 items-center">
           <form onSubmit={onSubmit} className="w-full lg:w-2/5">
             <fieldset disabled={processing} className="group">
@@ -88,204 +78,121 @@ export default function DiseñosCreate({
                 </CardHeader>
                 <CardContent className="grid gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="nombre">Nombre del diseño</Label>
-                    <Input value={data.nombre}
-                      id="nombre"
-                      name="nombre"
-                      autoComplete="nombre"
-                      placeholder="Vetiqueta"
-                      onChange={(e) => setData("nombre", e.target.value)}
+                    <Label htmlFor="descripcion">Descripción del pedido</Label>
+                    <Textarea value={data.descripcion}
+                      id="descripcion"
+                      name="descripcion"
+                      autoComplete="descripcion"
+                      placeholder="Talles: S-500, M-500..."
+                      onChange={(e) => setData("descripcion", e.target.value)}
                       required
                     />
-                    <LabelError message={errors.nombre} />
+                    <LabelError message={errors.descripcion} />
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-2">
                     <div className="space-y-2">
-                      <Label>Tipo de etiqueta</Label>
+                      <Label>Diseño</Label>
                       <Select
-                        onValueChange={(value: string) => {
-                          reset("ancho");
-                          setData("tipo_etiqueta_id", parseInt(value));
-                        }}
+                        onValueChange={(value: string) => setData("disenio_id", value)}
                         required
                       >
-                        <SelectTrigger aria-label="Tipo de etiqueta">
+                        <SelectTrigger aria-label="Diseños">
                           <SelectValue
-                            placeholder="Seleccione el tipo de etiqueta"
-                            aria-label={selectedTipoEtiqueta?.nombre}
+                            placeholder="Seleccione el diseño"
+                            aria-label={selectedDiseño?.nombre}
                           >
                           </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectLabel>Tipos de etiqueta</SelectLabel>
-                            {filteredTipoEtiquetas?.map((tipoEtiqueta) => {
-                              return <SelectItem key={tipoEtiqueta.id} value={tipoEtiqueta.id.toString()}>
-                                {tipoEtiqueta.nombre}
+                            <SelectLabel>Diseño</SelectLabel>
+                            {diseños?.map((diseño) => {
+                              return <SelectItem key={diseño.id} value={diseño.id.toString()}>
+                                {diseño.nombre}
                               </SelectItem>
                             })}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                      <LabelError message={errors.tipo_etiqueta_id} />
+                      <LabelError message={errors.disenio_id} />
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Color de fondo</Label>
-                      <Select
-                        onValueChange={(value: string) => setData("color_fondo_id", parseInt(value))}
-                        required
-                      >
-                        <SelectTrigger aria-label="Color de fondo">
-                          <SelectValue
-                            placeholder="Seleccione el color de fondo"
+                      <Label htmlFor="fecha_prevista">
+                        Fecha de entrega
+                      </Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !data.fecha_prevista && "text-muted-foreground"
+                            )}
                           >
-                          </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Colores</SelectLabel>
-                            {colores?.map((color) => {
-                              return <SelectItem key={color.id} value={color.id.toString()}>
-                                {color.nombre}
-                              </SelectItem>
-                            })}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <LabelError message={errors.tipo_etiqueta_id} />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-2">
-                    {data.colores.map((color, index) => {
-                      // @ts-ignore 
-                      const colorError = errors[`colores.${index}.id`] as string | undefined;
-                      return (
-                        <div key={index} className="space-y-2">
-                          <Label>Color {index + 1}</Label>
-                          <Select
-                            // Importante para la validación de arrays en Laravel
-                            name={`colores[${index}][id]`}
-                            onValueChange={(value: string) => {
-                              const updatedColors = [...data.colores];
-                              updatedColors[index].id = parseInt(value);;
-                              setData("colores", updatedColors);
-                            }}
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {data.fecha_prevista ? format(data.fecha_prevista, "PPP", { locale: es }) : <span>Seleccione una fecha</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
                             required
-                          >
-                            <SelectTrigger id={`colores[${index}][id]`} aria-label={`Color ${index + 1}`}>
-                              <SelectValue
-                                placeholder={`Seleccione el color ${index + 1}`}
-                                aria-label={colores.find(c => c.id === color.id)?.nombre || ""}
-                              >
-                              </SelectValue>
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectLabel>Colores</SelectLabel>
-                                {colores?.map((color) => (
-                                  <SelectItem key={color.id} value={color.id.toString()}>
-                                    {color.nombre}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                          <LabelError message={colorError} />
-                          {(index === data.colores.length - 1 && index !== 0) && (
-                            <Button
-                              onClick={() => removeColor(index)}
-                              variant="link"
-                              className="mt-2 text-destructive"
-                            >
-                              Eliminar último color
-                            </Button>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-
-                  {data.colores.length < CANTIDAD_COLORES.length && (
-                    <Button
-                      type="button"
-                      onClick={addColor}
-                      variant="outline"
-                      className="mt-2"
-                    >
-                      Agregar color
-                    </Button>
-                  )}
-
-                  <div className="grid md:grid-cols-2 gap-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="ancho">Ancho (mm)</Label>
-                      <Select
-                        onValueChange={(value: string) => {
-                          setData("ancho", parseInt(value));
-                        }}
-                        disabled={filteredPrecios.length < 1}
-                      >
-                        <SelectTrigger id="ancho" name="ancho" aria-label="Ancho de la etiqueta">
-                          <SelectValue
-                            placeholder={filteredPrecios
-                              ? "Seleccione el ancho de la etiqueta"
-                              : "No hay medidas cargadas"
-                            }
+                            mode="single"
+                            fromDate={addDays(new Date(), 45)}
+                            toDate={addDays(new Date(), 85)}
+                            selected={data.fecha_prevista}
+                            onSelect={(value) => setData("fecha_prevista", value)}
+                            initialFocus
                           />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {filteredPrecios.length > 0
-                            ? MEDIDAS.map((medida) => {
-                              return <SelectItem key={medida} value={medida.toString()}>
-                                {medida}
-                              </SelectItem>
-                            })
-                            : <SelectItem value="-1">
-                              No hay medidas cargadas aún
-                            </SelectItem>
-                          }
-                        </SelectContent>
-                      </Select>
-                      <LabelError message={errors.ancho} />
+                        </PopoverContent>
+                      </Popover>
+                      <LabelError message={errors.fecha_prevista} />
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="largo">Largo (mm)</Label>
-                      <Input value={data.largo}
-                        id="largo"
-                        name="largo"
-                        autoComplete="largo"
-                        type="number"
-                        onChange={(e) =>
-                          setData("largo", e.target.valueAsNumber)
-                        }
-                        placeholder="75"
-                        required
-                      />
-                      <LabelError message={errors.largo} />
+                    <div className="space-y-3">
+                      <Label htmlFor="tipo_entrega">
+                        Tipo de entrega
+                      </Label>
+                      <RadioGroup
+                        id="tipo_entrega"
+                        onValueChange={(value) => setData("tipo_entrega", value)}
+                        defaultValue={TipoEntrega.Rollo}
+                        className="flex flex-col space-y-1"
+                      >
+                        {Object.entries(tipoEntregaForm).map(([, { label, value }], index) => {
+                          return <div className="flex items-center space-x-3 space-y-0" key={index}>
+                            <RadioGroupItem id={`tipo_entrega_${value}`} className="w-4 h-4" value={value} aria-label={label} />
+                            <Label htmlFor={`tipo_entrega_${value}`} className="font-normal">
+                              {label}
+                            </Label>
+                          </div>
+                        })}
+                      </RadioGroup>
+                      <LabelError message={errors.tipo_entrega} />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="foto">
-                      Suba una foto de su diseño
-                    </Label>
-                    <Input id="foto" type="file" accept=".png, .jpg, .jpeg" className="file:text-foreground" required
-                      onChange={(e) => {
-                        const target = e.target as HTMLInputElement & { files: FileList };
-                        setData("foto", target.files[0])
-                      }}
+                    <Label htmlFor="cantidad">Cantidad de unidades</Label>
+                    <Input
+                      value={data.cantidad}
+                      id="cantidad"
+                      type="number"
+                      name="cantidad"
+                      autoComplete="cantidad"
+                      placeholder="1500"
+                      onChange={(e) => setData("cantidad", e.target.valueAsNumber)}
+                      required
                     />
-                    <LabelError message={errors.foto} />
+                    <LabelError message={errors.cantidad} />
                   </div>
+
                 </CardContent>
                 <CardFooter className="flex justify-end">
                   <Button className="inline-flex items-center justify-center px-4 py-2 font-medium  group-disabled:pointer-events-none">
                     <Spinner className="absolute h-5 group-enabled:opacity-0" />
-                    <span className="group-disabled:opacity-0">Agregar</span>
+                    <span className="group-disabled:opacity-0">Solicitar</span>
                   </Button>
                 </CardFooter>
               </Card>

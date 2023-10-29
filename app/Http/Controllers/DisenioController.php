@@ -19,7 +19,7 @@ class DisenioController extends Controller {
     public function index() {
         $this->authorize('viewAny', Disenio::class);
 
-        $disenios = Disenio::all()?->load('colores', 'tipoEtiqueta')->map(function (Disenio $disenio) {
+        $disenios = auth()->user()->diseños()->get()?->load('colores', 'tipoEtiqueta')->map(function (Disenio $disenio) {
             return [
                 ...$disenio->toArray(),
                 'can' => [

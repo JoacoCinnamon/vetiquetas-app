@@ -31,8 +31,15 @@ class PedidoPolicy {
     /**
      * Determine whether the user can delete the model.
      */
+    public function update(User $user, Pedido $pedido): bool {
+        return $user->isAdmin() || $user->hasPermissionTo(Permisos::ActualizarPedidos->value);
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     */
     public function delete(User $user, Pedido $pedido): bool {
-        return $user->hasPermissionTo(Permisos::BorrarPedidos->value) && $user->id == $pedido->user_id;
+        return $user->isAdmin() || $user->hasPermissionTo(Permisos::BorrarPedidos->value) && $user->id == $pedido->user_id;
     }
 
     /**

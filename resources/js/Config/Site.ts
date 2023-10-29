@@ -38,7 +38,7 @@ export const vetiquetasConfig: VetiquetasConfig = {
     {
       title: "Inicio",
       href: route("inicio"),
-      isProtected: true,
+      isPrivate: true,
       isActive: () => {
         return route().current("inicio");
       },
@@ -49,6 +49,14 @@ export const vetiquetasConfig: VetiquetasConfig = {
       isProtected: true,
       isActive: () => {
         return route().current("disenios.index");
+      },
+    },
+    {
+      title: "Pedidos",
+      href: route("pedidos.index"),
+      isProtected: true,
+      isActive: () => {
+        return route().current("pedidos.index");
       },
     },
     {
@@ -91,6 +99,12 @@ export const vetiquetasConfig: VetiquetasConfig = {
     {
       title: "Mis diseños",
       href: route("disenios.index"),
+      isProtected: true,
+      items: []
+    },
+    {
+      title: "Pedidos",
+      href: route("pedidos.index"),
       isProtected: true,
       items: []
     },

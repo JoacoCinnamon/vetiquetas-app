@@ -6,7 +6,7 @@ use App\Http\Controllers\Administracion\PrecioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Administracion\TipoEtiquetaController;
 use App\Http\Controllers\Administracion\ColorController;
-
+use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('perfil.update');
 
     Route::resource('/disenios', DisenioController::class);
+    Route::resource('/pedidos', PedidoController::class);
 });
 
 Route::middleware(['role:admin', 'auth'])->prefix('administracion')->name('administracion.')->group(function () {

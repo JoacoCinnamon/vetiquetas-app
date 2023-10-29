@@ -8,10 +8,11 @@ import {
   TableCaption,
 } from "@/Components/ui/table"
 import { Diseño } from "@/types/models";
-import { Button } from "@/Components/ui/button";
+import { Button, buttonVariants } from "@/Components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
 import { DiseñosOperaciones } from "@/Components/diseños/acciones";
+import { cn } from "@/lib/utils";
 
 export type DiseñoYOperacion = Diseño & { can: { editAndDelete: boolean } };
 
@@ -35,7 +36,9 @@ export default function DiseñosIndex({ auth, diseños }: PageProps<{ diseños: 
 
 function DiseñosHeader() {
   return <Header heading="Diseños" text="Todos tus diseños">
-    <Link href={route("disenios.create")} className="inline-flex items-center justify-center"><PlusIcon className="absolute h-4" /></Link>
+    <Link href={route("disenios.create")} className={cn(buttonVariants(), "inline-flex items-center justify-center")}>
+      <PlusIcon className="absolute h-4" />
+    </Link>
   </Header >
 }
 

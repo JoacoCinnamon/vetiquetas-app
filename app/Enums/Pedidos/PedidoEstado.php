@@ -8,6 +8,14 @@ enum PedidoEstado: int {
     case Entregado = 3;
     case Cancelado = 4;
 
+    public function estadosPosibles(): array|null {
+        return match ($this) {
+            self::Pedido => [self::Procesado->value, self::Entregado->value],
+            self::Procesado => [self::Entregado->value],
+            default => []
+        };
+    }
+
     /**
      * Return the value of the enum
      */

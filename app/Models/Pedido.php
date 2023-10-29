@@ -17,19 +17,23 @@ class Pedido extends Model {
 
     protected $guarded = [];
 
+    public $casts = [
+            'fecha_pedido' => 'datetime',
+            'fecha_prevista' => 'date',
+            'fecha_entrega' => 'date',
+            'estado' => PedidoEstado::class,
+            'tipo_entrega' => TipoEntrega::class
+        ];
+
+    public static function forCurrentUser() {
+        return auth()->user()->pedidos()->get()?->load('diseño');
+    }
+
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
 
-    public $casts = [
-        'fecha_pedido' => 'datetime',
-        'fecha_prevista' => 'date',
-        'fecha_entrega' => 'date',
-        'estado' => PedidoEstado::class,
-        'tipo_entrega' => TipoEntrega::class
-    ];
-
     public function diseño(): BelongsTo {
-        return $this->belongsTo(Disenio::class);
+        return $this->belongsTo(Disenio::class, 'disenio_id');
     }
 }

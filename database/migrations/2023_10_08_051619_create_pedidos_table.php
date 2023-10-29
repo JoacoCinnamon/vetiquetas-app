@@ -34,7 +34,7 @@ return new class () extends Migration {
 
             $table->timestamp('fecha_pedido')->useCurrent();
             $table->date('fecha_prevista');
-            $table->date('fecha_entrega')->default(null)->index();
+            $table->date('fecha_entrega')->nullable()->index();
             $table->softDeletes();
         });
     }

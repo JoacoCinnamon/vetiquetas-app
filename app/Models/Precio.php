@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 class Precio extends Model {
     use HasFactory;
@@ -13,6 +14,10 @@ class Precio extends Model {
     public $timestamps = false;
 
     protected $guarded = [];
+
+    public function scopeLastPricesForTipoEtiqueta(Builder $query, ...$tipo_etiquetas_id) {
+        return $query->whereIn('tipo_etiqueta_id', $tipo_etiquetas_id)->whereNull('fecha_hasta');
+    }
 
     public static function getUltimoPrecio(
         int $tipo_etiqueta_id,
