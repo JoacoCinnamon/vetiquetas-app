@@ -11,9 +11,9 @@ export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         nombre: "",
         apellido: "",
-        documento: "",
         tipo_documento: "",
         cuit_cuil: "",
+        direccion: "",
         email: "",
         password: "",
         password_confirmation: "",
@@ -87,6 +87,23 @@ export default function Register() {
                         />
 
                         <LabelError message={errors.cuit_cuil} className="mt-2" />
+                    </div>
+
+                    <div className="space-y-2 mt-4">
+                        <Label htmlFor="direccion">Dirección</Label>
+
+                        <Input
+                            id="direccion"
+                            name="direccion"
+                            value={data.direccion}
+                            className="mt-1 block w-full"
+                            autoComplete="direccion"
+                            autoFocus={true}
+                            onChange={(e) => setData("direccion", e.target.value)}
+                            required
+                        />
+
+                        <LabelError message={errors.direccion} className="mt-2" />
                     </div>
 
                     <div className="space-y-2 mt-4">

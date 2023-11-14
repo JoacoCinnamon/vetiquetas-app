@@ -80,30 +80,24 @@ export enum TipoEntrega {
 
 export const TIPOS_ENTREGAS: Record<"rollo" | "rollo_apresto" | "cortada" | "cortada_apresto" | "cortada_doblada_medio" | "cortada_doblada_puntas", { incrementa: number, label: string, value: string }> = {
   rollo: { incrementa: 1, label: "En rollo", value: TipoEntrega.Rollo },
-  rollo_apresto: { incrementa: 1.10, label: "En rollo + apresto (+10%)", value: TipoEntrega.RolloApresto },
-  cortada: { incrementa: 1.15, label: "Cortada (+15%)", value: TipoEntrega.Cortada },
-  cortada_apresto: { incrementa: 1.2, label: "Cortada + apresto (+20%)", value: TipoEntrega.CortadaApresto },
-  cortada_doblada_medio: { incrementa: 1.25, label: "Cortada y doblada al medio (+25%)", value: TipoEntrega.CortadaDobladaMedio },
-  cortada_doblada_puntas: { incrementa: 1.25, label: "Cortada y doblada en las puntas (+25%)", value: TipoEntrega.CortadaDobladaPuntas },
+  rollo_apresto: { incrementa: 1.10, label: "En rollo + apresto", value: TipoEntrega.RolloApresto },
+  cortada: { incrementa: 1.15, label: "Cortada", value: TipoEntrega.Cortada },
+  cortada_apresto: { incrementa: 1.2, label: "Cortada + apresto", value: TipoEntrega.CortadaApresto },
+  cortada_doblada_medio: { incrementa: 1.25, label: "Cortada y doblada al medio", value: TipoEntrega.CortadaDobladaMedio },
+  cortada_doblada_puntas: { incrementa: 1.25, label: "Cortada y doblada en las puntas", value: TipoEntrega.CortadaDobladaPuntas },
 } as const
 
 export function getTipoEntrega(tipoEntrega: TipoEntrega) {
-  switch (tipoEntrega) {
-    case TipoEntrega.Rollo:
-      return TIPOS_ENTREGAS.rollo;
-    case TipoEntrega.RolloApresto:
-      return TIPOS_ENTREGAS.rollo_apresto;
-    case TipoEntrega.Cortada:
-      return TIPOS_ENTREGAS.cortada;
-    case TipoEntrega.CortadaApresto:
-      return TIPOS_ENTREGAS.cortada_apresto;
-    case TipoEntrega.CortadaDobladaMedio:
-      return TIPOS_ENTREGAS.cortada_doblada_medio;
-    case TipoEntrega.CortadaDobladaPuntas:
-      return TIPOS_ENTREGAS.cortada_doblada_puntas;
-    default:
-      return TIPOS_ENTREGAS.rollo;
-  }
+  if (tipoEntrega == TipoEntrega.Rollo) return TIPOS_ENTREGAS.rollo;
+  if (tipoEntrega == TipoEntrega.RolloApresto) return TIPOS_ENTREGAS.rollo_apresto;
+  if (tipoEntrega == TipoEntrega.Cortada) return TIPOS_ENTREGAS.cortada;
+  if (tipoEntrega == TipoEntrega.CortadaApresto) return TIPOS_ENTREGAS.cortada_apresto;
+  if (tipoEntrega == TipoEntrega.CortadaDobladaMedio) return TIPOS_ENTREGAS.cortada_doblada_medio;
+  if (tipoEntrega == TipoEntrega.CortadaDobladaPuntas) return TIPOS_ENTREGAS.cortada_doblada_puntas;
+
+  // Default
+  console.log(tipoEntrega)
+  return TIPOS_ENTREGAS.rollo;
 }
 
 export type Pedido = {

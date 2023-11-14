@@ -61,7 +61,6 @@ function PreciosHeader() {
 }
 
 export default function PreciosIndex({ auth, precios }: PageProps<{ precios: PrecioWithTipoEtiqueta[]; }>) {
-  console.log(precios);
   return (
     <AuthenticatedLayout
       user={auth.user}

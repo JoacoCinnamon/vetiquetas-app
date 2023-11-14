@@ -13,13 +13,15 @@ import {
   TableRow,
 } from "@/Components/ui/table"
 import { Pedido, PedidoEstado, getPedidoEstado, getTipoEntrega } from "@/types/models";
-import { PlusIcon } from "@radix-ui/react-icons";
+
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/Components/ui/button";
 import { formatPrecio } from "@/utils/currencies";
 import formatDate from "@/utils/date";
 import { Badge } from "@/Components/ui/badge";
 import { PedidoOperaciones } from "@/Components/pedidos/acciones";
+import { PlusIcon } from "@/Components/icons";
+import { ReaderIcon } from "@radix-ui/react-icons";
 
 
 type PedidoWithUser = Pedido & { user: Pick<User, "id" | "nombre" | "apellido"> };
@@ -67,6 +69,7 @@ function PedidosTable({ pedidos }: { pedidos: PedidoWithUser[] | [] | undefined 
           <TableHead>Fecha pedida</TableHead>
           <TableHead>Fecha entregada</TableHead>
           <TableHead>{""}</TableHead>
+          <TableHead>{""}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -90,6 +93,11 @@ function PedidosTable({ pedidos }: { pedidos: PedidoWithUser[] | [] | undefined 
                 (pedido.estado === PedidoEstado.Pedido || pedido.estado === PedidoEstado.Procesado)
                 && <PedidoOperaciones pedido={pedido} />
               }
+            </TableCell>
+            <TableCell className="text-right">
+              <a href={route("pedidos.pdf", pedido.id)} className={cn(buttonVariants({ variant: "outline" }), "h-8 w-8 p-0")} target="_blank" rel="noreferrer">
+                <ReaderIcon className="h-4 w-4" />
+              </a>
             </TableCell>
           </TableRow>
         ))}

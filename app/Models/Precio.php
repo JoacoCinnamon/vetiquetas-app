@@ -16,7 +16,7 @@ class Precio extends Model {
     protected $guarded = [];
 
     public function scopeLastPricesForTipoEtiqueta(Builder $query, ...$tipo_etiquetas_id) {
-        return $query->whereIn('tipo_etiqueta_id', $tipo_etiquetas_id)->whereNull('fecha_hasta');
+        return $query->whereIn('tipo_etiqueta_id', ...$tipo_etiquetas_id)->whereNull('fecha_hasta');
     }
 
     public static function getUltimoPrecio(

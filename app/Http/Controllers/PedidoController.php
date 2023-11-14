@@ -9,6 +9,7 @@ use App\Http\Requests\Pedidos\StorePedidoRequest;
 use App\Models\Disenio;
 use App\Models\Pedido;
 use App\Models\Precio;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Inertia\Inertia;
 
 class PedidoController extends Controller {
@@ -46,7 +47,7 @@ class PedidoController extends Controller {
         }
 
         $disenios = auth()->user()->diseños()->get()?->load('colores', 'tipoEtiqueta');
-        $precios = Precio::lastPricesForTipoEtiqueta($disenios->map(fn ($d) => $d->tipo_etiqueta_id))->get();
+        $precios = Precio::lastPricesForTipoEtiqueta($disenios->pluck('tipo_etiqueta_id'))->get();
 
         return Inertia::render('Pedidos/Create', [
             'precios' => fn () => $precios,
@@ -91,6 +92,17 @@ class PedidoController extends Controller {
         $this->authorize('view', $pedido);
     }
 
+    public function stream(int $id) {
+        $pedido = Pedido::withTrashed()->find($id);
+        $user = auth()->user();
+        abort_unless($user->isAdmin() || $user->id == $pedido->user_id, 404);
+
+        $pedido->load(['diseño' => ['tipoEtiqueta', 'colorFondo', 'colores']]);
+        $pdf = Pdf::loadView('pdf', ['pedido' => $pedido]);
+        return $pdf->stream('pedido.pdf');
+    }
+
+
     /**
      * Update the specified resource in storage.
      */
@@ -101,6 +113,10 @@ class PedidoController extends Controller {
 
         if (in_array($nuevoEstado->value, $pedido->estado->estadosPosibles())) {
             $pedido->update(['estado' => $nuevoEstado->value]);
+
+            if ($nuevoEstado === PedidoEstado::Entregado) {
+                $pedido->update(['fecha_entrega' => now()]);
+            }
         }
 
 

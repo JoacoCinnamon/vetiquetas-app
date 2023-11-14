@@ -30,6 +30,7 @@ class User extends Authenticatable {
         'apellido',
         // 'documento',
         // 'tipo_documento',
+        'direccion',
         'cuit_cuil',
         'email',
         'password',

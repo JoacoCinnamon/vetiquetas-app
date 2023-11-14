@@ -148,12 +148,15 @@ export default function DiseñosCreate({
                             <SelectLabel>Colores</SelectLabel>
                             {colores?.map((color) => {
                               return <SelectItem key={color.id} value={color.id.toString()}>
-                                <div className="border" style={{
-                                  backgroundColor: color.hex,
-                                  width: "100px",
-                                  height: "25px",
-                                }}
-                                />
+                                <div className="flex flex-1 justify-center items-center gap-2">
+                                  <div className="border" style={{
+                                    backgroundColor: color.hex,
+                                    width: "100px",
+                                    height: "25px",
+                                  }}
+                                  />
+                                  <span>{color.nombre}</span>
+                                </div>
                               </SelectItem>
                             })}
                           </SelectGroup>
@@ -192,12 +195,15 @@ export default function DiseñosCreate({
                                 <SelectLabel>Colores</SelectLabel>
                                 {colores?.map((color) => (
                                   <SelectItem key={color.id} value={color.id.toString()}>
-                                    <div className="border" style={{
-                                      backgroundColor: color.hex,
-                                      width: "100px",
-                                      height: "25px",
-                                    }}
-                                    />
+                                    <div className="flex flex-1 justify-center items-center gap-2">
+                                      <div className="border" style={{
+                                        backgroundColor: color.hex,
+                                        width: "100px",
+                                        height: "25px",
+                                      }}
+                                      />
+                                      <span>{color.nombre}</span>
+                                    </div>
                                   </SelectItem>
                                 ))}
                               </SelectGroup>

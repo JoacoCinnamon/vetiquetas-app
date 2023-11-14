@@ -37,7 +37,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/disenios', DisenioController::class);
     Route::resource('/pedidos', PedidoController::class);
+    Route::get('/pedidos/{id}/pdf', [PedidoController::class, 'stream'])->name('pedidos.pdf');
 });
+
 
 Route::middleware(['role:admin', 'auth'])->prefix('administracion')->name('administracion.')->group(function () {
     Route::resource('/etiquetas', TipoEtiquetaController::class)->except(['show', 'create', 'edit']);

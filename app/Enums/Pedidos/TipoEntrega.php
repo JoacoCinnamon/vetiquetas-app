@@ -34,6 +34,18 @@ enum TipoEntrega: int {
         };
     }
 
+    public function label(): string {
+        return match ($this) {
+            self::Rollo => 'En rollo',
+            self::RolloApresto => 'En rollo + apresto',
+            self::Cortada => 'Cortada',
+            self::CortadaApresto => 'Cortada + apresto',
+            self::CortadaDobladaMedio => 'Cortada y doblada al medio',
+            self::CortadaDobladaPuntas => 'Cortada y doblada en las puntas',
+            default => 'En rollo'
+        };
+    }
+
     /**
      * Return the value of the enum
      */

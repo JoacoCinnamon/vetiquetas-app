@@ -34,6 +34,10 @@ class Disenio extends Model {
         return $this->hasMany(Pedido::class);
     }
 
+    public function colorFondo(): BelongsTo {
+        return $this->belongsTo(Color::class, 'color_fondo_id', 'id');
+    }
+
     public function colores(): BelongsToMany {
         return $this->belongsToMany(Color::class, 'color_diseño', 'diseño_id', 'color_id');
     }
