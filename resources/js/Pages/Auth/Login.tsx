@@ -1,4 +1,5 @@
-import { useEffect, FormEventHandler } from "react";
+import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { useEffect, FormEventHandler, useRef } from "react";
 import { Checkbox } from "@/Components/ui/checkbox";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, useForm } from "@inertiajs/react";
@@ -14,9 +15,11 @@ export default function Login({
     status?: string;
     canResetPassword: boolean;
 }) {
+    const captchaRef = useRef<HCaptcha>(null);
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
+        hcaptcha: captchaRef.current?.getResponse() ?? "",
         remember: false,
     });
 
@@ -68,6 +71,16 @@ export default function Login({
                             required
                         />
                         <LabelError className="mt-2" message={errors.password} />
+                    </div>
+
+                    <div className="block mt-4">
+                        <HCaptcha
+                            sitekey="2bb1ef6d-b043-4bce-b58d-4fb8a04a716c"
+                            theme="dark"
+                            onLoad={() => captchaRef.current?.execute()}
+                            onVerify={(token) => setData("hcaptcha", token)}
+                        />
+                        <LabelError className="mt-2" message={errors.hcaptcha} />
                     </div>
 
                     <div className="block mt-4">

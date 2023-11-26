@@ -1,4 +1,4 @@
-import { useEffect, FormEventHandler } from "react";
+import { useEffect, FormEventHandler, useRef } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { Label, LabelError } from "@/Components/ui/label";
@@ -6,8 +6,10 @@ import { Input } from "@/Components/ui/input";
 import { Button, buttonVariants } from "@/Components/ui/button";
 import { Spinner } from "@/Components/spinner";
 import { cn } from "@/lib/utils";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 export default function Register() {
+    const captchaRef = useRef<HCaptcha>(null);
     const { data, setData, post, processing, errors, reset } = useForm({
         nombre: "",
         apellido: "",
@@ -17,6 +19,7 @@ export default function Register() {
         email: "",
         password: "",
         password_confirmation: "",
+        hcaptcha: captchaRef.current?.getResponse() ?? "",
     });
 
     useEffect(() => {
@@ -156,6 +159,16 @@ export default function Register() {
                         />
 
                         <LabelError message={errors.password_confirmation} className="mt-2" />
+                    </div>
+
+                    <div className="block mt-4">
+                        <HCaptcha
+                            sitekey="2bb1ef6d-b043-4bce-b58d-4fb8a04a716c"
+                            theme="dark"
+                            onLoad={() => captchaRef.current?.execute()}
+                            onVerify={(token) => setData("hcaptcha", token)}
+                        />
+                        <LabelError className="mt-2" message={errors.hcaptcha} />
                     </div>
 
                     <div className="flex items-center justify-end mt-4">
