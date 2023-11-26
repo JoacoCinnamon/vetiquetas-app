@@ -19,7 +19,7 @@ export default function Login({
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
-        hcaptcha: captchaRef.current?.getResponse() ?? "",
+        hcaptcha: "",
         remember: false,
     });
 
@@ -31,8 +31,9 @@ export default function Login({
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
-        post(route("iniciar-sesion"));
+        post(route("iniciar-sesion"), {
+            onFinish: () => captchaRef.current?.resetCaptcha()
+        });
     };
 
     return (
@@ -77,6 +78,8 @@ export default function Login({
                         <HCaptcha
                             sitekey="2bb1ef6d-b043-4bce-b58d-4fb8a04a716c"
                             theme="dark"
+                            ref={captchaRef}
+                            onExpire={() => captchaRef.current?.resetCaptcha()}
                             onLoad={() => captchaRef.current?.execute()}
                             onVerify={(token) => setData("hcaptcha", token)}
                         />

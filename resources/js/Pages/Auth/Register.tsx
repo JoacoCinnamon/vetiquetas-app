@@ -19,7 +19,7 @@ export default function Register() {
         email: "",
         password: "",
         password_confirmation: "",
-        hcaptcha: captchaRef.current?.getResponse() ?? "",
+        hcaptcha: "",
     });
 
     useEffect(() => {
@@ -30,8 +30,9 @@ export default function Register() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
-        post(route("registrar"));
+        post(route("registrar"), {
+            onFinish: () => captchaRef.current?.resetCaptcha()
+        });
     };
 
     return (
@@ -165,6 +166,8 @@ export default function Register() {
                         <HCaptcha
                             sitekey="2bb1ef6d-b043-4bce-b58d-4fb8a04a716c"
                             theme="dark"
+                            ref={captchaRef}
+                            onExpire={() => captchaRef.current?.resetCaptcha()}
                             onLoad={() => captchaRef.current?.execute()}
                             onVerify={(token) => setData("hcaptcha", token)}
                         />
