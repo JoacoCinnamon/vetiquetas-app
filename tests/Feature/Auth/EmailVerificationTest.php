@@ -35,7 +35,7 @@ test('email can be verified', function () {
 
     Event::assertDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
-    $response->assertRedirect(RouteServiceProvider::HOME . '?verified=1');
+    $response->assertRedirect(auth()->user()?->isAdmin() ? route('administracion.dashboard') : RouteServiceProvider::HOME . '?verified=1');
 });
 
 test('email is not verified with invalid hash', function () {

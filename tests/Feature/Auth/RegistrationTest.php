@@ -25,7 +25,7 @@ test('new users can register', function () {
     ]);
 
     assertAuthenticated();
-    $response->assertRedirect(RouteServiceProvider::HOME);
+    $response->assertRedirect(auth()->user()?->isAdmin() ? route('administracion.dashboard') : RouteServiceProvider::HOME);
 });
 
 test('invalid user cuit_cuil is rejected', function () {

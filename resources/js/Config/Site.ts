@@ -37,10 +37,10 @@ export const vetiquetasConfig: VetiquetasConfig = {
     },
     {
       title: "Inicio",
-      href: route("inicio"),
+      href: route("administracion.dashboard"),
       isPrivate: true,
       isActive: () => {
-        return route().current("inicio");
+        return route().current("administracion.dashboard");
       },
     },
     {
@@ -92,7 +92,7 @@ export const vetiquetasConfig: VetiquetasConfig = {
     },
     {
       title: "Inicio",
-      href: route("inicio"),
+      href: route("administracion.dashboard"),
       isProtected: true,
       items: []
     },

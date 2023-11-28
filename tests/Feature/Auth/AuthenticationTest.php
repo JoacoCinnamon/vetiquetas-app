@@ -20,7 +20,7 @@ test('users can authenticate using the login screen', function () {
     ]);
 
     assertAuthenticated();
-    $response->assertRedirect(RouteServiceProvider::HOME);
+    $response->assertRedirect(auth()->user()?->isAdmin() ? route('administracion.dashboard') : RouteServiceProvider::HOME);
 });
 
 test('users can not authenticate with invalid password', function () {

@@ -53,6 +53,8 @@ class RegisterRequest extends FormRequest {
      */
     public function register(): User {
         $validatedUser = $this->validated();
+        // Elimina el campo del captcha para que no interfiera al crearse
+        unset($validatedUser['hcaptcha']);
         $user = User::create($validatedUser);
         $user->syncRoles(Roles::Usuario->value);
         return $user;

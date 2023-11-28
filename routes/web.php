@@ -27,10 +27,6 @@ Route::get('/', function () {
 
 Route::get('/cotizar', CotizarController::class)->name('cotizar');
 
-Route::get('/inicio', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('inicio');
-
 Route::middleware('auth')->group(function () {
     Route::get('/perfil', [ProfileController::class, 'edit'])->name('perfil.edit');
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('perfil.update');
@@ -42,6 +38,11 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['role:admin', 'auth'])->prefix('administracion')->name('administracion.')->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard', [
+            'analytics' => App\Models\Pedido::analytics(),
+        ]);
+    })->name('dashboard');
     Route::resource('/etiquetas', TipoEtiquetaController::class)->except(['show', 'create', 'edit']);
 
     Route::post('/precios/aumentar', [PrecioController::class, 'aumentar'])->name('precios.aumentar');
