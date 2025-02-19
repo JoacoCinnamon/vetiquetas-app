@@ -51,7 +51,7 @@ class DisenioController extends Controller {
     public function store(DiseniosStoreRequest $request) {
         $this->authorize('create', Disenio::class);
 
-        $foto_path = $request->file('foto')->store('diseños', 'public');
+        $foto_path = $request->file('foto')->store('disenios', 'public');
         // 'diseños' es el directorio dentro de 'storage/app/public' donde se almacenará la imagen
         // Esta función almacena la imagen y devuelve la ruta relativa al archivo
 
@@ -100,9 +100,9 @@ class DisenioController extends Controller {
         DB::beginTransaction();
         try {
             if ($request->hasFile('foto')) {
-                // Toda esta triquiñuela para que nos quede solo el /diseños/*.png
+                // Toda esta triquiñuela para que nos quede solo el /disenios/*.png
                 $fotoAnteriorPath = str_replace('/storage', '', parse_url($disenio->foto_path, PHP_URL_PATH));
-                $foto_path = $request->file('foto')->store('diseños', 'public');
+                $foto_path = $request->file('foto')->store('disenios', 'public');
 
                 // Actualiza el campo de la foto con la nueva ruta
                 $disenio->foto_path = asset('storage/' . $foto_path);
