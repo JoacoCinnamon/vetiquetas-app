@@ -4,12 +4,15 @@ namespace App\Models;
 
 use App\Enums\Pedidos\PedidoEstado;
 use App\Enums\Pedidos\TipoEntrega;
+use App\Observers\PedidoObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
+#[ObservedBy([PedidoObserver::class])]
 class Pedido extends Model {
     use HasFactory;
     use SoftDeletes;
@@ -19,12 +22,12 @@ class Pedido extends Model {
     protected $guarded = [];
 
     public $casts = [
-            'fecha_pedido' => 'datetime',
-            'fecha_prevista' => 'date',
-            'fecha_entrega' => 'date',
-            'estado' => PedidoEstado::class,
-            'tipo_entrega' => TipoEntrega::class
-        ];
+        'fecha_pedido' => 'datetime',
+        'fecha_prevista' => 'date',
+        'fecha_entrega' => 'date',
+        'estado' => PedidoEstado::class,
+        'tipo_entrega' => TipoEntrega::class
+    ];
 
     public static function forCurrentUser() {
         return auth()->user()->pedidos()->get()?->load('diseño');

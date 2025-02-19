@@ -102,6 +102,7 @@ export function getTipoEntrega(tipoEntrega: TipoEntrega) {
 
 export type Pedido = {
   id: number;
+  uuid: string;
   user_id: number;
 
   diseño_id: Pick<Diseño, "id">;

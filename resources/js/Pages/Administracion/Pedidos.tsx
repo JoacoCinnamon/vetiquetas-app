@@ -26,6 +26,8 @@ import { ReaderIcon } from "@radix-ui/react-icons";
 
 type PedidoWithUser = Pedido & { user: Pick<User, "id" | "nombre" | "apellido"> };
 
+const getPdfUrl = (pedido: Pedido) => `/storage/pedidos/pdfs/${pedido.uuid}.pdf`;
+
 export default function PedidosIndex({ auth, pedidos }: PageProps<{ pedidos: PedidoWithUser[] | undefined; }>) {
 
   return (
@@ -95,7 +97,7 @@ function PedidosTable({ pedidos }: { pedidos: PedidoWithUser[] | [] | undefined 
               }
             </TableCell>
             <TableCell className="text-right">
-              <a href={route("pedidos.pdf", pedido.id)} className={cn(buttonVariants({ variant: "outline" }), "h-8 w-8 p-0")} target="_blank" rel="noreferrer">
+              <a href={getPdfUrl(pedido)} className={cn(buttonVariants({ variant: "outline" }), "h-8 w-8 p-0")} target="_blank" rel="noreferrer">
                 <ReaderIcon className="h-4 w-4" />
               </a>
             </TableCell>
