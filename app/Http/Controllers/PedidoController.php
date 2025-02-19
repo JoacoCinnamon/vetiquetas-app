@@ -9,7 +9,6 @@ use App\Http\Requests\Pedidos\StorePedidoRequest;
 use App\Models\Disenio;
 use App\Models\Pedido;
 use App\Models\Precio;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Inertia\Inertia;
 
 class PedidoController extends Controller {
@@ -78,8 +77,10 @@ class PedidoController extends Controller {
             'precio_id' => $precio->id,
             'precio' => $precioTotal,
             'cantidad' => $request->validated('cantidad'),
+            'estado' => PedidoEstado::Pedido,
             'tipo_entrega' => $tipoEntrega->value,
             'fecha_prevista' => $request->validated('fecha_prevista'),
+            'fecha_pedido' => now(),
         ]);
 
         return to_route('pedidos.index');
@@ -91,17 +92,6 @@ class PedidoController extends Controller {
     public function show(Pedido $pedido) {
         $this->authorize('view', $pedido);
     }
-
-    public function stream(int $id) {
-        $pedido = Pedido::withTrashed()->find($id);
-        $user = auth()->user();
-        abort_unless($user->isAdmin() || $user->id == $pedido->user_id, 404);
-
-        $pedido->load(['diseño' => ['tipoEtiqueta', 'colorFondo', 'colores']]);
-        $pdf = Pdf::loadView('pdf', ['pedido' => $pedido]);
-        return $pdf->stream('pedido.pdf');
-    }
-
 
     /**
      * Update the specified resource in storage.
