@@ -14,6 +14,7 @@ class PedidoService {
             'fecha_pedido' => $pedido->fecha_pedido->format('d/m/Y'),
             'cantidad' => $pedido->cantidad,
             'tipo_entrega' => $pedido->tipo_entrega->label(),
+            'precio' => '$' . number_format($pedido->precio, 2, ',', '.'),
 
             'user' => [
                 'nombre' => $pedido->user->nombre,

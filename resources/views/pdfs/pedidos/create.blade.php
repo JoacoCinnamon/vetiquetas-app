@@ -93,12 +93,16 @@
             <td>{{ $pedido['diseño']['tipo_etiqueta']['nombre'] }}</td>
         </tr>
         <tr>
+            <th>TIPO ENTREGA:</th>
+            <td>{{ $pedido['tipo_entrega'] }}</td>
+        </tr>
+        <tr>
             <th>UNIDADES:</th>
             <td>{{ $pedido['cantidad'] }}</td>
         </tr>
         <tr>
-            <th>TIPO ENTREGA:</th>
-            <td>{{ $pedido['tipo_entrega'] }}</td>
+            <th>PRECIO TOTAL:</th>
+            <td>{{ $pedido['precio'] }}</td>
         </tr>
         <tr>
             <th>ANCHO:</th>
