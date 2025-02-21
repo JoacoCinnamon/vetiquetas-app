@@ -31,6 +31,8 @@ class PedidoCreatedMail extends Mailable {
             'user' => [
                 'nombre' => $pedido->user->nombre,
                 'apellido' => $pedido->user->apellido,
+                'email' => $pedido->user->email,
+                'cuit_cuil' => $pedido->user->cuit_cuil,
             ],
 
         ];

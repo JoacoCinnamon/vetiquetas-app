@@ -40,6 +40,8 @@
                 {{ $pedidoData['user']['apellido'] }}</strong>.</p>
         <p>A continuación, los detalles:</p>
         <ul>
+            <li><strong>CUIT/CUIL:</strong> {{ $pedidoData['user']['cuit_cuil'] }}</li>
+            <li><strong>Email:</strong> {{ $pedidoData['user']['email'] }}</li>
             <li><strong>Fecha:</strong> {{ $pedidoData['fecha_pedido'] }}</li>
             <li><strong>Fecha prevista:</strong> {{ $pedidoData['fecha_prevista'] }}</li>
             <li><strong>Tipo de Entrega:</strong> {{ $pedidoData['tipo_entrega'] }}</li>
