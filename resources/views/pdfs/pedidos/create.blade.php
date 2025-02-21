@@ -85,20 +85,8 @@
             <td>{{ $pedido['user']['cuit_cuil'] }}</td>
         </tr>
         <tr>
-            <th>NOMBRE DE ETIQUETA:</th>
-            <td>{{ $pedido['diseño']['nombre'] }}</td>
-        </tr>
-        <tr>
-            <th>DESCRIPCION:</th>
-            <td>{{ $pedido['descripcion'] }}</td>
-        </tr>
-        <tr>
             <th>FECHA:</th>
             <td>{{ $pedido['fecha_pedido'] }}</td>
-        </tr>
-        <tr>
-            <th>ORDEN:</th>
-            <td>{{ $pedido['id'] }}</td>
         </tr>
         <tr>
             <th>TIPO DE ETIQUETA:</th>
@@ -119,6 +107,14 @@
         <tr>
             <th>LARGO:</th>
             <td>{{ $pedido['diseño']['largo'] }}</td>
+        </tr>
+        <tr>
+            <th>NOMBRE DE ETIQUETA:</th>
+            <td>{{ $pedido['diseño']['nombre'] }}</td>
+        </tr>
+        <tr>
+            <th>DESCRIPCION:</th>
+            <td>{{ $pedido['descripcion'] }}</td>
         </tr>
     </table>
 
