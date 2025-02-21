@@ -102,11 +102,12 @@ class PedidoController extends Controller {
         $nuevoEstado = PedidoEstado::from($request->validated('estado'));
 
         if (in_array($nuevoEstado->value, $pedido->estado->estadosPosibles())) {
-            $pedido->update(['estado' => $nuevoEstado->value]);
+            $pedido->estado = $nuevoEstado;
 
             if ($nuevoEstado === PedidoEstado::Entregado) {
-                $pedido->update(['fecha_entrega' => now()]);
+                $pedido->fecha_entrega = now();
             }
+            $pedido->save();
         }
 
 
