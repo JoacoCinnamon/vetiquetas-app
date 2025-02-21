@@ -11,7 +11,7 @@ class PedidoService {
         return [
             'id' => $pedido->id,
             'descripcion' => $pedido->descripcion,
-            'fecha_pedido' => $pedido->fecha_pedido->format('Y-d-m'),
+            'fecha_pedido' => $pedido->fecha_pedido->format('d/m/Y'),
             'cantidad' => $pedido->cantidad,
             'tipo_entrega' => $pedido->tipo_entrega->label(),
 

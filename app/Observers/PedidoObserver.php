@@ -2,9 +2,10 @@
 
 namespace App\Observers;
 
+use App\Mail\PedidoCreatedMail;
 use App\Models\Pedido;
-use App\Services\Pedidos\PedidoCreatePDF;
 use App\Services\PedidoService;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class PedidoObserver {
@@ -16,6 +17,8 @@ class PedidoObserver {
     }
 
     public function created(Pedido $pedido): void {
-        PedidoCreatePDF::createAndStore($pedido);
+        Mail::to(env('ADMIN_USER_MAIL'))
+            ->bcc(env('USER_BCC_MAIL_PEDIDOS'))
+            ->send(new PedidoCreatedMail($pedido));
     }
 }
